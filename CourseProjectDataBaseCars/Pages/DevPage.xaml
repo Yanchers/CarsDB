@@ -6,37 +6,61 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:CourseProjectDataBaseCars"
       mc:Ignorable="d" 
-      Height="300" Width="830"
+      Height="600" Width="1000"
       Title="DevPage">
     
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
-            <ColumnDefinition Width="1.6*"/>
+            <ColumnDefinition Width="1.5*"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition/>
             <RowDefinition Height="auto"/>
+            <RowDefinition/>
+            <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
 
-        <DataGrid ItemsSource="{Binding CarItems}" ColumnWidth="*" CanUserResizeColumns="False" CanUserAddRows="False"/>
-        <DataGrid Grid.Column="1" ItemsSource="{Binding FactoryItems}" ColumnWidth="*" CanUserResizeColumns="False" CanUserAddRows="False"/>
-        <DataGrid Grid.Column="2" ItemsSource="{Binding CreditItems}" ColumnWidth="*" CanUserResizeColumns="False" CanUserAddRows="False"/>
-
+        <DataGrid ItemsSource="{Binding CarItems}" ColumnWidth="*" CanUserResizeColumns="False" CanUserAddRows="False" AutoGenerateColumns="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Id" Binding="{Binding Id}" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Модель" Binding="{Binding Name}"/>
+                <DataGridTextColumn Header="Стоимость" Binding="{Binding Cost}"/>
+            </DataGrid.Columns>
+        </DataGrid>
         <StackPanel Grid.Row="1">
             <Button Command="{Binding AddCarCommand}" Content="Добавить"/>
             <Button Command="{Binding RemoveCarCommand}" Content="Удалить"/>
         </StackPanel>
+        <DataGrid Grid.Column="1" ItemsSource="{Binding FactoryItems}" ColumnWidth="*" CanUserResizeColumns="False" CanUserAddRows="False"/>
         <StackPanel Grid.Row="1" Grid.Column="1">
-            <Button Command="{Binding AddCommand}" Content="Добавить"/>
+            <Button Command="{Binding AddFactoryCommand}" Content="Добавить"/>
             <Button Content="Удалить"/>
         </StackPanel>
+        <DataGrid Grid.Column="2" ItemsSource="{Binding CreditItems}" ColumnWidth="*" CanUserResizeColumns="False" CanUserAddRows="False"/>
         <StackPanel Grid.Row="1" Grid.Column="2">
             <Button Content="Добавить"/>
             <Button Content="Удалить"/>
         </StackPanel>
-        <Button Command="{Binding SaveItemsCommand}" Grid.Row="2" Grid.ColumnSpan="3" Margin="0 10" Content="Сохранить"/>
+
+        <DataGrid Grid.Row="2" ItemsSource="{Binding CarsFactoriesItems}" ColumnWidth="*" CanUserResizeColumns="False" CanUserAddRows="False"/>
+        <StackPanel Grid.Row="3">
+            <Button Content="Добавить"/>
+            <Button Content="Удалить"/>
+        </StackPanel>
+        <DataGrid Grid.Row="2" Grid.Column="1" ItemsSource="{Binding BankItems}" ColumnWidth="*" CanUserResizeColumns="False" CanUserAddRows="False"/>
+        <StackPanel Grid.Row="3" Grid.Column="1">
+            <Button Content="Добавить"/>
+            <Button Content="Удалить"/>
+        </StackPanel>
+        <DataGrid Grid.Row="2" Grid.Column="2" ItemsSource="{Binding CarsCreditsItems}" ColumnWidth="*" CanUserResizeColumns="False" CanUserAddRows="False"/>
+        <StackPanel Grid.Row="3" Grid.Column="2">
+            <Button Content="Добавить"/>
+            <Button Content="Удалить"/>
+        </StackPanel>
+
+        <Button Command="{Binding SaveItemsCommand}" Grid.Row="4" Grid.ColumnSpan="3" Margin="0 10" Content="Сохранить"/>
     </Grid>
 </local:BasePage>

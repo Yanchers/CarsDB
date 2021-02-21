@@ -66,24 +66,27 @@ namespace CourseProjectDataBaseCars
             //SelectedBank = BankItems[0].Name;
 
             CarInfoCollection = CollectionViewSource.GetDefaultView(infoCollection);
-            TotalCost = infoCollection[0].TotalCost;
-            MonthlyPay = infoCollection[0].MonthlyPay;
+            if (infoCollection.Count > 0)
+            {
+                TotalCost = (float)infoCollection[0].TotalCost;
+                MonthlyPay = (float)infoCollection[0].MonthlyPay;
+            }
 
             PreviousPageCommand = new RelayCommand(param => ApplicationViewModel.Instance.CurrentPage = PageTypes.Catalog);
         }
 
         private int mSelectedSummary { get; set; }
 
-        public decimal TotalCost { get; set; }
-        public decimal MonthlyPay { get; set; }
+        public float TotalCost { get; set; }
+        public float MonthlyPay { get; set; }
         public int SelectedSummary
         {
             get => mSelectedSummary;
             set
             {
                 var temp = CarInfoCollection.Cast<CarSummaryInfo>().ElementAt(value);
-                TotalCost = temp.TotalCost;
-                MonthlyPay = temp.MonthlyPay;
+                TotalCost = (float)temp.TotalCost;
+                MonthlyPay = (float)temp.MonthlyPay;
 
                 mSelectedSummary = value;
             }

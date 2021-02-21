@@ -47,7 +47,7 @@ namespace CourseProjectDataBaseCars
             {
                 entity.ToTable("Banks", "Dealer");
 
-                entity.Property(e => e.Id).HasColumnName("id");
+                entity.Property(e => e.Id).HasColumnName("id").UseIdentityColumn();
 
                 entity.Property(e => e.Name)
                     .IsRequired()
@@ -59,7 +59,7 @@ namespace CourseProjectDataBaseCars
             {
                 entity.ToTable("Cars", "Dealer");
 
-                entity.Property(e => e.Id).HasColumnName("id");
+                entity.Property(e => e.Id).HasColumnName("id").UseIdentityColumn();
 
                 entity.Property(e => e.Cost)
                     .HasColumnType("money")
@@ -117,7 +117,7 @@ namespace CourseProjectDataBaseCars
             {
                 entity.ToTable("Credits", "Dealer");
 
-                entity.Property(e => e.Id).HasColumnName("id");
+                entity.Property(e => e.Id).HasColumnName("id").UseIdentityColumn();
 
                 entity.Property(e => e.BankId).HasColumnName("bankId");
 
@@ -135,7 +135,7 @@ namespace CourseProjectDataBaseCars
             {
                 entity.ToTable("Factories", "Dealer");
 
-                entity.Property(e => e.Id).HasColumnName("id");
+                entity.Property(e => e.Id).HasColumnName("id").UseIdentityColumn();
 
                 entity.Property(e => e.City)
                     .HasMaxLength(50)

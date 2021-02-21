@@ -16,7 +16,7 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
         <Menu FontSize="14">
-            <MenuItem Header="Главная"/>
+            <MenuItem Command="{Binding CatalogPageCommand}" Header="Главная"/>
             <MenuItem Header="Изменить">
                 <MenuItem Header="Банки"/>
                 <MenuItem Header="Кредиты"/>

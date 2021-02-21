@@ -6,7 +6,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:CourseProjectDataBaseCars"
       mc:Ignorable="d" 
-      Height="450" Width="920"
+      Height="450" Width="1100"
       Title="Catalog"
       x:Name="catalogPage">
 
@@ -29,6 +29,7 @@
                 Content="Поиск" FontSize="18" VerticalAlignment="Center" Width="90"/>
 
         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Command="{Binding AddCarCommand}" Content="Добавить" FontSize="21" Margin="0 0 50 0"/>
             <TextBlock Text="Группировка по" FontSize="20" Margin="0 0 20 0" VerticalAlignment="Center"/>
             <ComboBox Width="190" FontSize="20" SelectedIndex="{Binding SelectedGrouping}" Margin="0 0 20 0">
                 <ComboBoxItem Content="Без группировки" IsSelected="True"/>
@@ -47,7 +48,7 @@
         <ListBox Grid.Row="3" ItemsSource="{Binding CarItems}" BorderThickness="0" FontSize="23">
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <UniformGrid/>
+                    <UniformGrid Columns="4"/>
                 </ItemsPanelTemplate>
             </ListBox.ItemsPanel>
             <ListBox.ItemTemplate>
