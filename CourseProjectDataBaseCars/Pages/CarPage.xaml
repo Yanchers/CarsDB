@@ -1,0 +1,135 @@
+﻿<local:BasePage x:TypeArguments="local:CarPageViewModel"
+    x:Class="CourseProjectDataBaseCars.CarPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:CourseProjectDataBaseCars"
+      mc:Ignorable="d"
+      Height="450" Width="1100"
+      Title="CarPage"
+    x:Name="carPage">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="0.3*"/>
+            </Grid.ColumnDefinitions>
+
+            <Button Command="{Binding PreviousPageCommand}" HorizontalAlignment="Left" FontSize="30" Content="X" VerticalAlignment="Center"/>
+            <TextBlock Text="{Binding CurrentCar.Name, StringFormat={}Модель: {0}}" FontSize="35" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            <Border Grid.Row="1" BorderThickness="1">
+                <Border.BorderBrush>
+                    <LinearGradientBrush StartPoint="0 0" EndPoint="1 1">
+                        <GradientStop Color="#fff" Offset="0"/>
+                        <GradientStop Color="#2B314D" Offset="0.5"/>
+                        <GradientStop Color="#fff" Offset="1"/>
+                    </LinearGradientBrush>
+                </Border.BorderBrush>
+            </Border>
+            <TextBlock Grid.Row="2" Text="{Binding TotalCost, StringFormat={}Итог: {0} руб.}" FontSize="31" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="30 0 0 0"/>
+            <TextBlock Grid.Row="2" Text="{Binding MonthlyPay, StringFormat={}Платёж: {0} руб.}" FontSize="31" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0 0 30 0"/>
+
+            <Border Grid.RowSpan="3" Grid.Column="1" Background="#eee" Padding="8">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="Забронировать" FontSize="30" Margin="0 20" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                    <Border Grid.Row="1" BorderThickness="1">
+                        <Border.BorderBrush>
+                            <SolidColorBrush Color="#000"/>
+                        </Border.BorderBrush>
+                    </Border>
+                    <TextBox Grid.Row="2" VerticalAlignment="Center" Margin="20 0" FontSize="20"/>
+                    <TextBox Grid.Row="3" VerticalAlignment="Center" Margin="20 0" FontSize="20"/>
+                    <Button Grid.Row="4" Content="Продолжить" FontSize="25"/>
+                </Grid>
+            </Border>
+            
+        </Grid>
+
+        <Grid Grid.Row="1">
+            <DataGrid ItemsSource="{Binding CarInfoCollection}" SelectedIndex="{Binding SelectedSummary}" FontSize="30" AutoGenerateColumns="False"
+                      CanUserAddRows="False" CanUserDeleteRows="False" ColumnWidth="*" CanUserResizeColumns="False" IsReadOnly="True" SelectionMode="Single">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Binding="{Binding BankName}" Header="Банк"/>
+                    <DataGridTextColumn Binding="{Binding Expiration}" Header="Конец кредита"/>
+                    <DataGridTextColumn Binding="{Binding Country}" Header="Страна"/>
+                    <DataGridTextColumn Binding="{Binding City}"  Header="Город"/>
+                    <DataGridTextColumn Binding="{Binding TranspCost, StringFormat={}{0} руб.}" Header="Доставка"/>
+                    <DataGridTextColumn Binding="{Binding Arrival}" Header="Дата доставки"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
+        
+        <!--<Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <TextBlock Text="Доступные заводы" FontSize="30" HorizontalAlignment="Center"/>
+                <ListBox Grid.Row="1" ItemsSource="{Binding FactoryItems}" SelectedItem="{Binding SelectedFactory}" 
+                          FontSize="23">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Width="200">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="{Binding Country}"/>
+                                <TextBlock Grid.Column="1" Text="{Binding City}"/>
+                            </Grid>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </Grid>
+
+            <Grid Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <TextBlock Text="Доступные банки" FontSize="30" HorizontalAlignment="Center"/>
+                <ComboBox Grid.Row="1" ItemsSource="{Binding BankItems, Converter={local:BankConverter}}" SelectedItem="{Binding SelectedBank}" 
+                          FontSize="23" VerticalAlignment="Center" Margin="70 10"/>
+                <ListBox Grid.Row="2" ItemsSource="{Binding CreditItems}" FontSize="30">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding Rate, StringFormat={}{0}%}"/>
+                                <TextBlock Text="{Binding Expiration}" Margin="15 0"/>
+                                <TextBlock Text="{Binding MonthlyPay, StringFormat={}{0} руб.}" Margin="15 0"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </Grid>
+            
+        </Grid>-->
+        
+    </Grid>
+</local:BasePage>

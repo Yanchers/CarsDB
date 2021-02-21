@@ -1,0 +1,42 @@
+﻿<local:BasePage x:TypeArguments="local:DevPageViewModel"
+    x:Class="CourseProjectDataBaseCars.DevPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:CourseProjectDataBaseCars"
+      mc:Ignorable="d" 
+      Height="300" Width="830"
+      Title="DevPage">
+    
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="1.6*"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+
+        <DataGrid ItemsSource="{Binding CarItems}" ColumnWidth="*" CanUserResizeColumns="False" CanUserAddRows="False"/>
+        <DataGrid Grid.Column="1" ItemsSource="{Binding FactoryItems}" ColumnWidth="*" CanUserResizeColumns="False" CanUserAddRows="False"/>
+        <DataGrid Grid.Column="2" ItemsSource="{Binding CreditItems}" ColumnWidth="*" CanUserResizeColumns="False" CanUserAddRows="False"/>
+
+        <StackPanel Grid.Row="1">
+            <Button Command="{Binding AddCarCommand}" Content="Добавить"/>
+            <Button Command="{Binding RemoveCarCommand}" Content="Удалить"/>
+        </StackPanel>
+        <StackPanel Grid.Row="1" Grid.Column="1">
+            <Button Command="{Binding AddCommand}" Content="Добавить"/>
+            <Button Content="Удалить"/>
+        </StackPanel>
+        <StackPanel Grid.Row="1" Grid.Column="2">
+            <Button Content="Добавить"/>
+            <Button Content="Удалить"/>
+        </StackPanel>
+        <Button Command="{Binding SaveItemsCommand}" Grid.Row="2" Grid.ColumnSpan="3" Margin="0 10" Content="Сохранить"/>
+    </Grid>
+</local:BasePage>
