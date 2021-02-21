@@ -42,6 +42,7 @@ namespace CourseProjectDataBaseCars
             using var context = new CarDealerContext();
             context.UpdateRange(CarItems);
             context.SaveChanges();
+            // ну вот тут какой-то код типа
         }
 
         public RelayCommand AddCarCommand { get; private set; }
