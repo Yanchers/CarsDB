@@ -47,7 +47,10 @@ namespace CourseProjectDataBaseCars
             {
                 entity.ToTable("Banks", "Dealer");
 
-                entity.Property(e => e.Id).HasColumnName("id").UseIdentityColumn();
+                entity.HasIndex(e => e.Name, "UQ__Banks__72E12F1B3D174439")
+                    .IsUnique();
+
+                entity.Property(e => e.Id).HasColumnName("id");
 
                 entity.Property(e => e.Name)
                     .IsRequired()
@@ -59,7 +62,10 @@ namespace CourseProjectDataBaseCars
             {
                 entity.ToTable("Cars", "Dealer");
 
-                entity.Property(e => e.Id).HasColumnName("id").UseIdentityColumn();
+                entity.HasIndex(e => e.Name, "UQ__Cars__72E12F1BB095A5B9")
+                    .IsUnique();
+
+                entity.Property(e => e.Id).HasColumnName("id");
 
                 entity.Property(e => e.Cost)
                     .HasColumnType("money")
@@ -73,7 +79,8 @@ namespace CourseProjectDataBaseCars
 
             modelBuilder.Entity<CarsCredit>(entity =>
             {
-                entity.HasNoKey();
+                entity.HasKey(e => new { e.CarId, e.CreditId })
+                    .HasName("PK__CarsCred__348C5F7DE482318A");
 
                 entity.ToTable("CarsCredits", "Dealer");
 
@@ -82,19 +89,20 @@ namespace CourseProjectDataBaseCars
                 entity.Property(e => e.CreditId).HasColumnName("creditId");
 
                 entity.HasOne(d => d.Car)
-                    .WithMany()
+                    .WithMany(p => p.CarsCredits)
                     .HasForeignKey(d => d.CarId)
-                    .HasConstraintName("FK__CarsCredi__carId__571DF1D5");
+                    .HasConstraintName("FK__CarsCredi__carId__5E8A0973");
 
                 entity.HasOne(d => d.Credit)
-                    .WithMany()
+                    .WithMany(p => p.CarsCredits)
                     .HasForeignKey(d => d.CreditId)
-                    .HasConstraintName("FK__CarsCredi__credi__5812160E");
+                    .HasConstraintName("FK__CarsCredi__credi__5F7E2DAC");
             });
 
             modelBuilder.Entity<CarsFactory>(entity =>
             {
-                entity.HasNoKey();
+                entity.HasKey(e => new { e.CarId, e.FactoryId })
+                    .HasName("PK__CarsFact__B7929F18A34075EF");
 
                 entity.ToTable("CarsFactories", "Dealer");
 
@@ -103,21 +111,21 @@ namespace CourseProjectDataBaseCars
                 entity.Property(e => e.FactoryId).HasColumnName("factoryId");
 
                 entity.HasOne(d => d.Car)
-                    .WithMany()
+                    .WithMany(p => p.CarsFactories)
                     .HasForeignKey(d => d.CarId)
-                    .HasConstraintName("FK__CarsFacto__carId__4F7CD00D");
+                    .HasConstraintName("FK__CarsFacto__carId__55009F39");
 
                 entity.HasOne(d => d.Factory)
-                    .WithMany()
+                    .WithMany(p => p.CarsFactories)
                     .HasForeignKey(d => d.FactoryId)
-                    .HasConstraintName("FK__CarsFacto__facto__5070F446");
+                    .HasConstraintName("FK__CarsFacto__facto__55F4C372");
             });
 
             modelBuilder.Entity<Credit>(entity =>
             {
                 entity.ToTable("Credits", "Dealer");
 
-                entity.Property(e => e.Id).HasColumnName("id").UseIdentityColumn();
+                entity.Property(e => e.Id).HasColumnName("id");
 
                 entity.Property(e => e.BankId).HasColumnName("bankId");
 
@@ -128,14 +136,14 @@ namespace CourseProjectDataBaseCars
                 entity.HasOne(d => d.Bank)
                     .WithMany(p => p.Credits)
                     .HasForeignKey(d => d.BankId)
-                    .HasConstraintName("FK__Credits__bankId__5535A963");
+                    .HasConstraintName("FK__Credits__bankId__5BAD9CC8");
             });
 
             modelBuilder.Entity<Factory>(entity =>
             {
                 entity.ToTable("Factories", "Dealer");
 
-                entity.Property(e => e.Id).HasColumnName("id").UseIdentityColumn();
+                entity.Property(e => e.Id).HasColumnName("id");
 
                 entity.Property(e => e.City)
                     .HasMaxLength(50)

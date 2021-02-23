@@ -1,0 +1,30 @@
+﻿<Window x:Class="CourseProjectDataBaseCars.AddCarRefWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CourseProjectDataBaseCars"
+        mc:Ignorable="d"
+        Title="AddCarRefWindow" Height="170" Width="500"
+        x:Name="AddRefWindow">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Text="Производитель" FontSize="18" HorizontalAlignment="Center"/>
+        <ComboBox ItemsSource="{Binding FactoryItems, Converter={local:FactoryConverter}}" SelectedIndex="{Binding SelectedFactory}"
+                  Margin="20 0" FontSize="20" VerticalAlignment="Center"/>
+        <TextBlock Grid.Column="1" Text="Кредит" FontSize="18" HorizontalAlignment="Center"/>
+        <ComboBox Grid.Column="1" ItemsSource="{Binding CreditItems,Converter={local:CreditConverter}}" SelectedIndex="{Binding SelectedCredit}"
+                  Margin="20 0" FontSize="20" VerticalAlignment="Center"/>
+
+        <Button Command="{Binding AddRefCommand}" CommandParameter="{Binding ElementName=AddRefWindow}" Grid.Row="1" Grid.ColumnSpan="2" Content="Добавить" FontSize="20" Margin="5 10"/>
+
+    </Grid>
+</Window>

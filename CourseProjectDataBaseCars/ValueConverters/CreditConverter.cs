@@ -5,11 +5,11 @@ using System.Linq;
 
 namespace CourseProjectDataBaseCars
 {
-    public class FactoryConverter : BaseValueConverter<FactoryConverter>
+    public class CreditConverter : BaseValueConverter<CreditConverter>
     {
         public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return ((List<Factory>)value).Select(f => f.Country + " " + f.City).ToList();
+            return ((List<Credit>)value).Select(c=> c.Bank.Name + " | " + c.Rate + "% | " + c.Expiration + " мес.").ToList();
         }
 
         public override object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
