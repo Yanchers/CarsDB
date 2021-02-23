@@ -68,7 +68,7 @@
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto"/>
-                    <RowDefinition/>
+                    <RowDefinition Height="auto"/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
                 <Grid>
@@ -97,13 +97,19 @@
 
                 <Border Grid.Row="2">
                     <StackPanel>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition/>
-                                <ColumnDefinition/>
-                            </Grid.ColumnDefinitions>
-                            <TextBlock Text="Завод" FontSize="18"/>
-                            <Button Command="{Binding SelectAllFactoriesCommand}" Grid.Column="1" Content="V" FontSize="15" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        <Grid Margin="0 0 0 10">
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Text="Заводы" FontSize="24"/>
+                            
+                            <TextBlock Grid.Row="1" Text="Выбрать все" FontSize="16" VerticalAlignment="Center"/>
+                            <Button Command="{Binding SelectAllFactoriesCommand}" Grid.Row="1" Content="V" FontSize="12" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+
+                            <TextBlock Grid.Row="2" Text="Без завода" FontSize="15" VerticalAlignment="Center" />
+                            <CheckBox Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Right" IsChecked="{Binding HasFactory}"/>
                         </Grid>
                         <ListBox ItemsSource="{Binding FactoryItems}" BorderThickness="0">
                             <ListBox.ItemsPanel>

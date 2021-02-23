@@ -51,7 +51,10 @@ namespace CourseProjectDataBaseCars
         private void AddRef(object param)
         {
             var carRef = new AddCarRefWindow(CurrentCar.Id);
-            carRef.ShowDialog();
+
+            if ((bool)carRef.ShowDialog())
+                MessageBox.Show("Модель связана.", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
+
             LoadInfo();
         }
         private void LoadInfo()

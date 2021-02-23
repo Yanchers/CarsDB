@@ -9,10 +9,7 @@ namespace CourseProjectDataBaseCars
 {
     class AddCarRefWindowViewModel : BaseViewModel
     {
-        public AddCarRefWindowViewModel()
-        {
-            
-        }
+        public AddCarRefWindowViewModel() { }
         public AddCarRefWindowViewModel(int id)
         {
             using var context = new CarDealerContext();
@@ -38,10 +35,11 @@ namespace CourseProjectDataBaseCars
         private void AddRef(object param)
         {
             using var context = new CarDealerContext();
-            context.Database.ExecuteSqlInterpolated($"Dealer.AddCarCreditFactoryRef {CarId}, {CreditItems[SelectedCredit].Id}, {FactoryItems[SelectedFactory].Id}");
-            context.SaveChanges();
 
-            ((Window)param).Close();
+            if (context.Database.ExecuteSqlInterpolated($"Dealer.AddCarCreditFactoryRef {CarId}, {CreditItems[SelectedCredit].Id}, {FactoryItems[SelectedFactory].Id}") > 0)
+                ((Window)param).DialogResult = true;
+            else
+                MessageBox.Show("Модель уже связана, либо непредвиденная ошибка.", "Внимание", MessageBoxButton.OK, MessageBoxImage.Exclamation);
         }
         public RelayCommand AddRefCommand { get; private set; }
 

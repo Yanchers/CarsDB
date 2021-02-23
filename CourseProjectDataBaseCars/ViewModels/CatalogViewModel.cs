@@ -6,6 +6,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using System.Windows;
 
 namespace CourseProjectDataBaseCars
 {
@@ -43,6 +44,7 @@ namespace CourseProjectDataBaseCars
             SelectCarCommand = new RelayCommand(param => SelectCar((int)param));
             FindCarCommand = new RelayCommand(name => Filter((string)name));
             SelectAllFactoriesCommand = new RelayCommand(param => SelectAllFactories());
+            AddCarCommand = new RelayCommand(param => AddCar());
         }
 
         #region Private Properties
@@ -75,6 +77,7 @@ namespace CourseProjectDataBaseCars
                 mSelectedSorting = value;
             }
         }
+        public bool HasFactory { get; set; }
         //public int SelectedGrouping
         //{
         //    get { return mSelectedGrouping; }
@@ -91,27 +94,34 @@ namespace CourseProjectDataBaseCars
 
         #region Private Methods
 
-        private void SelectAllFactories()
-        {
-            foreach (var pair in FactoryItems)
-                pair.Value = true;
-        }
         private void SelectCar(int id)
         {
             ApplicationViewModel.Instance.PageParam = CarItems.Find(c=>c.Id == id);
             ApplicationViewModel.Instance.CurrentPage = PageTypes.Car;
         }
+        private void SelectAllFactories()
+        {
+            foreach (var pair in FactoryItems)
+                pair.Value = true;
+        }
         private void Filter(string name)
         {
             using var context = new CarDealerContext();
-            var factories = FactoryItems.Where(f => f.Value).Select(f => new Factory(f.Key)).ToList();
+            var factories = FactoryItems.Where(f => f.Value).Select(f => new Factory(f.Key));
             var factoryCars = (from f in factories
-                        join cf in context.CarsFactories on f.Id equals cf.FactoryId
-                        join c in context.Cars on cf.CarId equals c.Id
-                        select new Car(c)).Distinct(new CarComparer());
+                            join cf in context.CarsFactories on f.Id equals cf.FactoryId
+                            join c in context.Cars on cf.CarId equals c.Id
+                            select new Car(c)).Distinct(new CarComparer());
+            var factoryCarsAll = (from f in context.Factories.ToList()
+                                  join cf in context.CarsFactories on f.Id equals cf.FactoryId
+                                  join c in context.Cars on cf.CarId equals c.Id
+                                  select new Car(c)).Distinct(new CarComparer());
             var nameCars = context.GetCarsByName(name);
+            var priceCars = context.GetCarsByPrice((float)UpperBorder, (float)DownBorder);
 
-            CarItems = factoryCars.Intersect(context.GetCarsByPrice((float)UpperBorder, (float)DownBorder), new CarComparer()).Intersect(nameCars, new CarComparer()).ToList();
+            CarItems = factoryCars.Intersect(priceCars, new CarComparer()).Intersect(nameCars, new CarComparer()).ToList();
+            if (HasFactory) CarItems.AddRange(context.Cars.ToList().Except(factoryCarsAll, new CarComparer()).Intersect(nameCars, new CarComparer()));
+
             SortBy((SortingTypes)SelectedSorting);
         }
         private void SortBy(SortingTypes type)
@@ -130,6 +140,12 @@ namespace CourseProjectDataBaseCars
                 default:
                     break;
             }
+        }
+        private void AddCar()
+        {
+            var window = new AddCarWindow();
+            if ((bool)window.ShowDialog())
+                MessageBox.Show("Модель успешно создана.", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
         }
         //private void GroupBy(GroupingTypes type)
         //{
@@ -154,6 +170,7 @@ namespace CourseProjectDataBaseCars
         public RelayCommand SelectCarCommand { get; private set; }
         public RelayCommand FindCarCommand { get; private set; }
         public RelayCommand SelectAllFactoriesCommand { get; private set; }
+        public RelayCommand AddCarCommand { get; private set; }
 
         #endregion
     }
