@@ -15,8 +15,10 @@ namespace CourseProjectDataBaseCars
         {
             DevPageCommand = new RelayCommand(param => ApplicationViewModel.Instance.CurrentPage = PageTypes.Dev);
             CatalogPageCommand = new RelayCommand(param => ApplicationViewModel.Instance.CurrentPage = PageTypes.Catalog);
+            BanksPageCommand = new RelayCommand(param => ApplicationViewModel.Instance.CurrentPage = PageTypes.Banks);
         }
         public RelayCommand DevPageCommand { get; private set; }
         public RelayCommand CatalogPageCommand { get; private set; }
+        public RelayCommand BanksPageCommand { get; private set; }
     }
 }

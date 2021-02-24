@@ -11,6 +11,7 @@ namespace CourseProjectDataBaseCars
         Menu = 0,
         Catalog,
         Car,
+        Banks,
         Dev
     }
 }

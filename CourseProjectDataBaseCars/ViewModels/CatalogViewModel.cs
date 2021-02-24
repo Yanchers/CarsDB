@@ -77,7 +77,7 @@ namespace CourseProjectDataBaseCars
                 mSelectedSorting = value;
             }
         }
-        public bool HasFactory { get; set; }
+        public bool HasFactory { get; set; } = true;
         //public int SelectedGrouping
         //{
         //    get { return mSelectedGrouping; }
