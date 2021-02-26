@@ -39,7 +39,7 @@ namespace CourseProjectDataBaseCars
             if (context.Database.ExecuteSqlInterpolated($"Dealer.AddCarCreditFactoryRef {CarId}, {CreditItems[SelectedCredit].Id}, {FactoryItems[SelectedFactory].Id}") > 0)
                 ((Window)param).DialogResult = true;
             else
-                MessageBox.Show("Модель уже связана, либо непредвиденная ошибка.", "Внимание", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                MessageBox.Show("Модель уже связана.", "Внимание", MessageBoxButton.OK, MessageBoxImage.Exclamation);
         }
         public RelayCommand AddRefCommand { get; private set; }
 

@@ -6,32 +6,29 @@ using System.Windows;
 
 namespace CourseProjectDataBaseCars
 {
-    class AddCarWindowViewModel : BaseViewModel
+    class AddBankWindowViewModel : BaseViewModel
     {
-        public AddCarWindowViewModel()
+        public AddBankWindowViewModel()
         {
-            CreateCarCommand = new RelayCommand(CreateCar);
+            CreateBankCommand = new RelayCommand(CreateBank);
         }
 
+        public Bank Bank { get; set; } = new Bank();
 
-        public string CarName { get; set; }
-        public string CarCost { get; set; }
-
-
-        private void CreateCar(object param)
+        private void CreateBank(object param)
         {
             try
             {
                 using var context = new CarDealerContext();
-                context.Database.ExecuteSqlInterpolated($"Dealer.AddCar {CarName}, {int.Parse(CarCost)}");
+                context.Database.ExecuteSqlInterpolated($"Dealer.AddBank {Bank.Name}");
                 ((Window)param).DialogResult = true;
             }
             catch (Exception e)
             {
                 MessageBox.Show(e.Message, "Внимание", MessageBoxButton.OK, MessageBoxImage.Exclamation);
             }
-
         }
-        public RelayCommand CreateCarCommand { get; private set; }
+
+        public RelayCommand CreateBankCommand { get; private set; }
     }
 }

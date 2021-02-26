@@ -18,8 +18,8 @@
         <Menu FontSize="14">
             <MenuItem Command="{Binding CatalogPageCommand}" Header="Главная"/>
             <MenuItem Header="Изменить">
-                <MenuItem Command="{Binding BanksPageCommand}" Header="Банки"/>
-                <MenuItem Header="Кредиты"/>
+                <MenuItem Command="{Binding BanksPageCommand}" Header="Банки \ Кредиты"/>
+                <MenuItem Command="{Binding FactoriesPageCommand}" Header="Заводы"/>
                 <MenuItem Command="{Binding DevPageCommand}" Header="Dev"/>
             </MenuItem>
             <MenuItem Header="Справка"/>

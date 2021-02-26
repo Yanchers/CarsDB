@@ -6,6 +6,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace CourseProjectDataBaseCars
 {
@@ -34,28 +35,40 @@ namespace CourseProjectDataBaseCars
     {
         public BanksPageViewModel()
         {
-            CreditItems = new List<CreditNode>();
             using var context = new CarDealerContext();
 
-            var credits = context.Credits.Include(c => c.Bank).ToList();
-            foreach (var credit in credits)
-            {
-                if (CreditItems.Contains(new CreditNode() { BankId = credit.BankId }, new CreditNodeComparer()))
-                    CreditItems[CreditItems.FindIndex(c => c.BankId == credit.BankId)].Children.Add(credit);
-                else
-                    CreditItems.Add(new CreditNode()
-                    {
-                        Bank = credit.Bank,
-                        BankId = credit.BankId,
-                        Expiration = credit.Expiration,
-                        Rate = (float)credit.Rate
-                    });
-            }
+            BankItems = context.Banks.Include(b => b.Credits).ToList();
+
+            AddCreditCommand = new RelayCommand(AddCredit);
+            CreateBankCommand = new RelayCommand(CreateBank);
         }
 
         #region Public Properties
 
-        public List<CreditNode> CreditItems { get; set; }
+        public List<Bank> BankItems { get; set; } = new List<Bank>();
+        public string BankName { get; set; }
+
+        #endregion
+
+        #region Private Methods
+
+        private void CreateBank(object param)
+        {
+            var window = new AddBankWindow();
+            if ((bool)window.ShowDialog())
+                MessageBox.Show("Банк успешно создан.", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+        private void AddCredit(object bankId)
+        {
+
+        }
+
+        #endregion
+
+        #region Commands
+
+        public RelayCommand CreateBankCommand { get; set; }
+        public RelayCommand AddCreditCommand { get; set; }
 
         #endregion
 

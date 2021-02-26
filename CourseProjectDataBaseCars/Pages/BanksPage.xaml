@@ -6,27 +6,40 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:CourseProjectDataBaseCars"
       mc:Ignorable="d"
-      Height="480" Width="800"
+      Height="490" Width="830"
       Title="Банки">
     
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
 
         <TextBlock Text="Доступные банки" FontSize="50" HorizontalAlignment="Center"/>
 
-        <ScrollViewer Grid.Row="1">
+        <Button Command="{Binding CreateBankCommand}" Grid.Row="1" FontSize="26" Content="Создать банк" Padding="8 2" Margin="30 0"/>
+
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Text="Название банка" FontSize="24"/>
+            <TextBlock Grid.Column="1" Text="Ставка" FontSize="24"/>
+            <TextBlock Grid.Column="2" Text="Окончание кредита" FontSize="24"/>
+        </Grid>
+        <!--<ScrollViewer Grid.Row="3" HorizontalScrollBarVisibility="Hidden">-->
             <!--<ListView ItemsSource="{Binding CreditItems}" FontSize="30">
-                -->
-            <!--<ListView.View>
+            <ListView.View>
                     <GridView AllowsColumnReorder="False">
                         <GridViewColumn Header="Банк" DisplayMemberBinding="{Binding Bank.Name}"/>
                         <GridViewColumn Header="Ставка" DisplayMemberBinding="{Binding Rate}"/>
                         <GridViewColumn Header="Окончание кредита" DisplayMemberBinding="{Binding Expiration, StringFormat={}Через {0} мес.}"/>
                     </GridView>
-                </ListView.View>--><!--
+                </ListView.View>
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <Grid Width="700">
@@ -50,24 +63,22 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>-->
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="auto"/>
-                    <RowDefinition/>
-                </Grid.RowDefinitions>
-                <Grid Width="720" HorizontalAlignment="Left">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                    </Grid.ColumnDefinitions>
-                    <TextBlock Text="Название банка" FontSize="28"/>
-                    <TextBlock Grid.Column="1" Text="Ставка" FontSize="28"/>
-                    <TextBlock Grid.Column="2" Text="Окончание кредита" FontSize="28"/>
-                </Grid>
-                <TreeView Grid.Row="1" ItemsSource="{Binding CreditItems}" FontSize="26">
-                    <TreeView.ItemTemplate>
-                        <HierarchicalDataTemplate ItemsSource="{Binding Children}">
+        <TreeView Grid.Row="3" ItemsSource="{Binding BankItems}" FontSize="26">
+            <TreeView.ItemTemplate>
+                <HierarchicalDataTemplate ItemsSource="{Binding Credits}">
+                    <Border Padding="5">
+                        <Grid Width="760">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="{Binding Name}"/>
+                            <Button Command="{Binding AddCreditCommand}" Grid.Column="3" Content="+" VerticalAlignment="Center" Margin="0 0 10 0"/>
+                        </Grid>
+                    </Border>
+
+                    <HierarchicalDataTemplate.ItemTemplate>
+                        <DataTemplate>
                             <Grid Width="700">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition/>
@@ -78,26 +89,12 @@
                                 <TextBlock Grid.Column="1" Text="{Binding Rate, StringFormat={}{0}%}"/>
                                 <TextBlock Grid.Column="2" Text="{Binding Expiration, StringFormat={}Через {0} мес.}"/>
                             </Grid>
-                        
-                            <HierarchicalDataTemplate.ItemTemplate>
-                                <DataTemplate>
-                                    <Grid Width="700">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition/>
-                                            <ColumnDefinition/>
-                                            <ColumnDefinition/>
-                                        </Grid.ColumnDefinitions>
-                                        <TextBlock Text="{Binding Bank.Name}"/>
-                                        <TextBlock Grid.Column="1" Text="{Binding Rate, StringFormat={}{0}%}"/>
-                                        <TextBlock Grid.Column="2" Text="{Binding Expiration, StringFormat={}Через {0} мес.}"/>
-                                    </Grid>
-                                </DataTemplate>
-                            </HierarchicalDataTemplate.ItemTemplate>
-                        </HierarchicalDataTemplate>
-                    </TreeView.ItemTemplate>
-                </TreeView>
-            </Grid>
-        </ScrollViewer>
+                        </DataTemplate>
+                    </HierarchicalDataTemplate.ItemTemplate>
+                </HierarchicalDataTemplate>
+            </TreeView.ItemTemplate>
+        </TreeView>
+        <!--</ScrollViewer>-->
         
     </Grid>
 </local:BasePage>
