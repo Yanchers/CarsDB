@@ -12,6 +12,7 @@ namespace CourseProjectDataBaseCars
         Catalog,
         Car,
         Banks,
+        Factories,
         Dev
     }
 }

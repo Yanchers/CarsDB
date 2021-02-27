@@ -17,7 +17,8 @@ namespace CourseProjectDataBaseCars
                 PageTypes.Dev => new DevPage(),
                 PageTypes.Catalog => new Catalog(),
                 PageTypes.Car => new CarPage(),
-                PageTypes.Banks=>new BanksPage(),
+                PageTypes.Banks => new BanksPage(),
+                PageTypes.Factories => new FactoriesPage(),
                 _ => new MenuPage(),
             };
         }

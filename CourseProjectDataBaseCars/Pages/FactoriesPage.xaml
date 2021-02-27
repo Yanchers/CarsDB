@@ -1,0 +1,90 @@
+﻿<local:BasePage x:TypeArguments="local:FactoriesPageViewModel"
+    x:Class="CourseProjectDataBaseCars.FactoriesPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:CourseProjectDataBaseCars"
+      mc:Ignorable="d" x:Name="factoriesPage"
+      Height="370" Width="800"
+      Title="Заводы">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Text="Заводы" FontSize="40" HorizontalAlignment="Center"/>
+
+        <!--<ListView Grid.Row="1">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="ID" DisplayMemberBinding="{Binding Id}"/>
+                    <GridViewColumn Header="Тип доставки" DisplayMemberBinding="{Binding Type}"/>
+                    <GridViewColumn Header="Страна" DisplayMemberBinding="{Binding Country}"/>
+                    <GridViewColumn Header="Город" DisplayMemberBinding="{Binding City}"/>
+                    <GridViewColumn Header="Время доставки" DisplayMemberBinding="{Binding DeliveryTime}"/>
+                    <GridViewColumn Header="Стоимость доставки" DisplayMemberBinding="{Binding TranspCost}"/>
+                </GridView>
+            </ListView.View>
+        </ListView>-->
+
+        <ListBox Grid.Row="1" ItemsSource="{Binding FactoryItems}" Grid.IsSharedSizeScope="True" Margin="3">
+            <ListBox.Template>
+                <ControlTemplate>
+                    <DockPanel LastChildFill="True">
+                        <Grid DockPanel.Dock="Top" TextBlock.FontSize="15" Height="25" x:Name="columnGrid">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <Button Command="{Binding CreateFactoryCommand}" Content="+" VerticalAlignment="Center" Margin="5 0" Width="20"/>
+                            <TextBlock Grid.Column="1" Text="ID" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                            <TextBlock Grid.Column="2" Text="Тип доставки" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                            <TextBlock Grid.Column="3" Text="Страна" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                            <TextBlock Grid.Column="4" Text="Город" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                            <TextBlock Grid.Column="5" Text="Время доставки" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                            <TextBlock Grid.Column="6" Text="Стоимость" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        </Grid>
+                        <ItemsPresenter></ItemsPresenter>
+                    </DockPanel>
+                </ControlTemplate>
+            </ListBox.Template>
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Grid Width="{Binding Path=ActualWidth, ElementName=columnGrid}" TextBlock.FontSize="20">
+                        <Grid.ColumnDefinitions>
+                            <!--<ColumnDefinition SharedSizeGroup="ID"/>
+                            <ColumnDefinition SharedSizeGroup="Type"/>
+                            <ColumnDefinition SharedSizeGroup="Country"/>
+                            <ColumnDefinition SharedSizeGroup="City"/>
+                            <ColumnDefinition SharedSizeGroup="Time"/>
+                            <ColumnDefinition SharedSizeGroup="Cost"/>-->
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Button Command="{Binding Path=DataContext.DeleteFactoryCommand, ElementName=factoriesPage}" CommandParameter="{Binding Id}" Content="-" VerticalAlignment="Center" Width="20"/>
+                        <TextBlock Grid.Column="1" Text="{Binding Id}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        <TextBlock Grid.Column="2" Text="{Binding Type}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        <TextBlock Grid.Column="3" TextWrapping="Wrap" Text="{Binding Country}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        <TextBlock Grid.Column="4" TextWrapping="Wrap" Text="{Binding City}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        <TextBlock Grid.Column="5" Text="{Binding DeliveryTime}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        <TextBlock Grid.Column="6" Text="{Binding TranspCost}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                    </Grid>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+
+    </Grid>
+</local:BasePage>
