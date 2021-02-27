@@ -60,7 +60,7 @@ namespace CourseProjectDataBaseCars
         private void AddFactory(object param)
         {
             using var context = new CarDealerContext();
-            FactoryItems.Add(context.Factories.Add(new Factory() { Country="Страна", City="Город", DeliveryTime=1, TranspCost=1m, Type=1}).Entity);
+            FactoryItems.Add(context.Factories.Add(new Factory() { Country="Страна", City="Город", DeliveryTime=1, TranspCost=1m, Type=TransportationTypes.None}).Entity);
             context.SaveChanges();
         }
 

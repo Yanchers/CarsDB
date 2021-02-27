@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace CourseProjectDataBaseCars
 {
@@ -23,14 +24,24 @@ namespace CourseProjectDataBaseCars
 
         private void CreateFactory(object param)
         {
-            // TODO: Окно добавления нового завода
+            var window = new AddFactoryWindow();
+            if ((bool)window.ShowDialog())
+                MessageBox.Show("Завод успешно создан.", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
         }
         private void DeleteFactory(object id)
         {
-            using var context = new CarDealerContext();
+            try
+            {
+                using var context = new CarDealerContext();
 
-            context.Factories.Remove(context.Factories.Find((int)id));
-            context.SaveChanges();
+                context.Factories.Remove(context.Factories.Find((int)id));
+                context.SaveChanges();
+                FactoryItems = context.Factories.ToList();
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message, "Внимание", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+            }
         }
 
         public RelayCommand CreateFactoryCommand { get; private set; }

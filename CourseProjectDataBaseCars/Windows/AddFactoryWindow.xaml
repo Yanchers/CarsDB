@@ -1,0 +1,78 @@
+﻿<Window x:Class="CourseProjectDataBaseCars.AddFactoryWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CourseProjectDataBaseCars"
+        mc:Ignorable="d" WindowStartupLocation="CenterScreen"
+        Title="Создать" Height="310" Width="410"
+        x:Name="addFactoryWindow">
+    <Window.DataContext>
+        <local:AddFactoryWindowViewModel/>
+    </Window.DataContext>
+    <Grid TextBlock.FontSize="23">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <!--Типы перевозок-->
+        <Grid Grid.ColumnSpan="2">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <TextBlock Text="Тип перевозки" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <ComboBox Grid.Row="1" VerticalAlignment="Center" Margin="60 0" ItemsSource="{Binding TranspTypeItems}" SelectedValue="{Binding Factory.Type, Converter={local:TranspEnumToStringConverter}}"/>
+        </Grid>
+
+        <!--Страна размещения-->
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <TextBlock Text="Страна" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <TextBox Grid.Row="1" VerticalAlignment="Center" Margin="10 0" Text="{Binding Factory.Country}" ToolTip="Страна, в которой размещен завод"/>
+        </Grid>
+
+        <!--Город размещения-->
+        <Grid Grid.Row="1" Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <TextBlock Text="Город" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <TextBox Grid.Row="1" VerticalAlignment="Center" Margin="10 0" Text="{Binding Factory.City}"/>
+        </Grid>
+
+        <!--Стоимость перевозки-->
+        <Grid Grid.Row="2">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <TextBlock FontSize="20" Text="Стоимость перевозки" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <TextBox Grid.Row="1" VerticalAlignment="Center" Margin="10 0" Text="{Binding Factory.TranspCost}"/>
+        </Grid>
+
+        <!--Время перевозки-->
+        <Grid Grid.Row="2" Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <TextBlock Text="Время перевозки" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <TextBox Grid.Row="1" VerticalAlignment="Center" Margin="10 0" Text="{Binding Factory.DeliveryTime}"/>
+        </Grid>
+
+        <Button Command="{Binding CreateFactoryCommand}" CommandParameter="{Binding ElementName=addFactoryWindow}"
+                Grid.Row="3" Grid.ColumnSpan="2" Content="Создать" FontSize="25" VerticalAlignment="Center" Padding="5 10" Margin="10 0"/>
+    </Grid>
+</Window>

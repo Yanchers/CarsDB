@@ -28,7 +28,7 @@ namespace CourseProjectDataBaseCars
         public string City { get; set; }
         public decimal TranspCost { get; set; }
         public int DeliveryTime { get; set; }
-        public int Type { get; set; }
+        public TransportationTypes Type { get; set; }
 
         public virtual ICollection<CarsFactory> CarsFactories { get; set; }
     }
