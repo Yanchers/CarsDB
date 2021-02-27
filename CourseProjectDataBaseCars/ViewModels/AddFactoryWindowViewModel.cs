@@ -16,7 +16,7 @@ namespace CourseProjectDataBaseCars
         }
 
 
-        public Factory Factory { get; set; } = new Factory() { Type=TransportationTypes.None };
+        public Factory Factory { get; set; } = new Factory() { Type = TransportationTypes.None };
         public List<string> TranspTypeItems { get; set; } = new List<string>()
         {
             "Ничего", "Ж/Д", "Машина", "Самолет", "Корабль"

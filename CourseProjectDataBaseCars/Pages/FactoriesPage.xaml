@@ -59,6 +59,20 @@
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Grid Width="{Binding Path=ActualWidth, ElementName=columnGrid}" TextBlock.FontSize="20">
+                        <Grid.ToolTip>
+                            <ToolTip>
+                                <ListBox ItemsSource="{Binding CarsFactories}">
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Text="{Binding Car.Name}" Margin="0 0 20 0"/>
+                                                <TextBlock Text="{Binding Car.Cost}"/>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
+                            </ToolTip>
+                        </Grid.ToolTip>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="0.2*"/>
                             <ColumnDefinition Width="0.3*"/>

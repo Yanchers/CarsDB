@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using Microsoft.EntityFrameworkCore;
 
 namespace CourseProjectDataBaseCars
 {
@@ -12,8 +13,8 @@ namespace CourseProjectDataBaseCars
         public FactoriesPageViewModel()
         {
             using var context = new CarDealerContext();
-
-            FactoryItems = context.Factories.ToList();
+            context.Cars.Load();
+            FactoryItems = context.Factories.Include(f => f.CarsFactories).ToList();
 
 
             CreateFactoryCommand = new RelayCommand(CreateFactory);
