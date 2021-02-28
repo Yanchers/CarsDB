@@ -6,12 +6,11 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:CourseProjectDataBaseCars"
       mc:Ignorable="d"
-      Height="490" Width="830"
+      Height="490" Width="600"
       Title="Банки">
     
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition/>
@@ -21,80 +20,153 @@
 
         <Button Command="{Binding CreateBankCommand}" Grid.Row="1" FontSize="26" Content="Создать банк" Padding="8 2" Margin="30 0"/>
 
-        <Grid Grid.Row="2">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
-            <TextBlock Text="Название банка" FontSize="24"/>
-            <TextBlock Grid.Column="1" Text="Ставка" FontSize="24"/>
-            <TextBlock Grid.Column="2" Text="Окончание кредита" FontSize="24"/>
-        </Grid>
-        <!--<ScrollViewer Grid.Row="3" HorizontalScrollBarVisibility="Hidden">-->
-            <!--<ListView ItemsSource="{Binding CreditItems}" FontSize="30">
-            <ListView.View>
-                    <GridView AllowsColumnReorder="False">
-                        <GridViewColumn Header="Банк" DisplayMemberBinding="{Binding Bank.Name}"/>
-                        <GridViewColumn Header="Ставка" DisplayMemberBinding="{Binding Rate}"/>
-                        <GridViewColumn Header="Окончание кредита" DisplayMemberBinding="{Binding Expiration, StringFormat={}Через {0} мес.}"/>
-                    </GridView>
-                </ListView.View>
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <Grid Width="700">
+        <ListBox Grid.Row="2" ItemsSource="{Binding BankItems}">
+            <ListBox.Template>
+                <ControlTemplate>
+                    <DockPanel LastChildFill="True">
+                        <Grid DockPanel.Dock="Top" TextBlock.FontSize="22" x:Name="bankListDockPanel">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition/>
-                                <ColumnDefinition/>
+                                <ColumnDefinition Width="0.4*"/>
                                 <ColumnDefinition/>
                             </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                            </Grid.RowDefinitions>
-                            <TextBlock Text="{Binding Bank.Name}" HorizontalAlignment="Center"/>
-                            <TextBlock Grid.Column="1" Text="{Binding Rate, StringFormat={}{0}%}" HorizontalAlignment="Center"/>
-                            <TextBlock Grid.Column="2" Text="{Binding Expiration, StringFormat={}Через {0} мес.}" HorizontalAlignment="Center"/>
 
-                            <Expander Grid.Row="1" Grid.ColumnSpan="3" Header="Другие кредиты" FontSize="20">
-                                
-                            </Expander>
+                            <TextBlock Text="ID Банка"/>
+                            <TextBlock Grid.Column="1" Text="Название банка"/>
                         </Grid>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>-->
-        <TreeView Grid.Row="3" ItemsSource="{Binding BankItems}" FontSize="26">
+                        
+                        <ScrollViewer HorizontalScrollBarVisibility="Disabled">
+                            <ItemsPresenter></ItemsPresenter>
+                        </ScrollViewer>
+                    </DockPanel>
+                </ControlTemplate>
+            </ListBox.Template>
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Grid Width="{Binding ElementName=bankListDockPanel, Path=ActualWidth}" TextBlock.FontSize="25">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="0.4*"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Text="{Binding Id}"/>
+                        <TextBlock Grid.Column="1" Text="{Binding Name}"/>
+
+                        <Expander Grid.Row="1" Grid.ColumnSpan="2" Header="Показать кредиты">
+                            <ListBox ItemsSource="{Binding Credits}" Width="{Binding ElementName=bankListDockPanel, Path=ActualWidth}">
+                                <ListBox.Template>
+                                    <ControlTemplate>
+                                        <DockPanel LastChildFill="True">
+                                            <Grid DockPanel.Dock="Top" Width="{Binding ElementName=bankListDockPanel, Path=ActualWidth}" TextBlock.FontSize="16">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="0.4*"/>
+                                                    <ColumnDefinition/>
+                                                    <ColumnDefinition/>
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Text="ID Кредита"/>
+                                                <TextBlock Grid.Column="1" Text="Ставка (%)"/>
+                                                <TextBlock Grid.Column="2" Text="Срок истечения (дни)"/>
+                                            </Grid>
+                                            <ItemsPresenter></ItemsPresenter>
+                                        </DockPanel>
+                                    </ControlTemplate>
+                                </ListBox.Template>
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid TextBlock.FontSize="18" Width="{Binding ElementName=bankListDockPanel, Path=ActualWidth}">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="0.4*"/>
+                                                <ColumnDefinition/>
+                                                <ColumnDefinition/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <TextBlock Text="{Binding Id}"/>
+                                            <TextBlock Grid.Column="1" Text="{Binding Rate}"/>
+                                            <TextBlock Grid.Column="2" Text="{Binding Expiration}"/>
+                                        </Grid>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                        </Expander>
+                    </Grid>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        
+        <!--<TreeView Grid.Row="2" ItemsSource="{Binding BankItems}">
+            <TreeView.Template>
+                
+            </TreeView.Template>
             <TreeView.ItemTemplate>
                 <HierarchicalDataTemplate ItemsSource="{Binding Credits}">
-                    <Border Padding="5">
-                        <Grid Width="760">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition/>
-                                <ColumnDefinition/>
-                            </Grid.ColumnDefinitions>
-                            <TextBlock Text="{Binding Name}"/>
-                            <Button Command="{Binding AddCreditCommand}" Grid.Column="3" Content="+" VerticalAlignment="Center" Margin="0 0 10 0"/>
-                        </Grid>
-                    </Border>
-
+                    <Grid Width="{Binding ElementName=bankTreeDockPanel, Path=ActualWidth}" TextBlock.FontSize="25">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="0.2*"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="{Binding Id}"/>
+                        <TextBlock Grid.Column="1" Text="{Binding Name}"/>
+                    </Grid>
                     <HierarchicalDataTemplate.ItemTemplate>
                         <DataTemplate>
-                            <Grid Width="700">
+                            <Grid Width="{Binding ElementName=bankTreeDockPanel, Path=ActualWidth}" TextBlock.FontSize="25">
                                 <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="0.2*"/>
                                     <ColumnDefinition/>
                                     <ColumnDefinition/>
                                     <ColumnDefinition/>
                                 </Grid.ColumnDefinitions>
-                                <TextBlock Text="{Binding Bank.Name}"/>
-                                <TextBlock Grid.Column="1" Text="{Binding Rate, StringFormat={}{0}%}"/>
-                                <TextBlock Grid.Column="2" Text="{Binding Expiration, StringFormat={}Через {0} мес.}"/>
+                                <TextBlock Text="{Binding Id}"/>
+                                <TextBlock Grid.Column="1" Text="{Binding Bank.Name}"/>
+                                <TextBlock Grid.Column="2" Text="{Binding Rate}"/>
+                                <TextBlock Grid.Column="3" Text="{Binding Expiration}"/>
                             </Grid>
                         </DataTemplate>
                     </HierarchicalDataTemplate.ItemTemplate>
+                    --><!--<HierarchicalDataTemplate.ItemTemplate>
+                        <DataTemplate>
+                            <ListBox Width="{Binding ElementName=bankTreeDockPanel, Path=ActualWidth}">
+                                <ListBox.Template>
+                                    <ControlTemplate>
+                                        <DockPanel LastChildFill="True">
+                                            <Grid DockPanel.Dock="Top">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition/>
+                                                    <ColumnDefinition/>
+                                                    <ColumnDefinition/>
+                                                </Grid.ColumnDefinitions>
+                                                
+                                                <TextBlock Text="ID Кредита"/>
+                                                <TextBlock Grid.Column="1" Text="Ставка (%)"/>
+                                                <TextBlock Grid.Column="2" Text="Срок истечения (дни)"/>
+                                            </Grid>
+                                            <ItemsPresenter></ItemsPresenter>
+                                        </DockPanel>
+                                    </ControlTemplate>
+                                </ListBox.Template>
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition/>
+                                                <ColumnDefinition/>
+                                                <ColumnDefinition/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <TextBlock Text="{Binding Id}"/>
+                                            <TextBlock Grid.Column="1" Text="{Binding Rate}"/>
+                                            <TextBlock Grid.Column="2" Text="{Binding Expiration}"/>
+                                        </Grid>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                        </DataTemplate>
+                    </HierarchicalDataTemplate.ItemTemplate>--><!--
                 </HierarchicalDataTemplate>
             </TreeView.ItemTemplate>
-        </TreeView>
-        <!--</ScrollViewer>-->
+        </TreeView>-->
         
     </Grid>
 </local:BasePage>

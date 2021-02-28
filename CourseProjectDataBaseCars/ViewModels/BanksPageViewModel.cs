@@ -10,27 +10,6 @@ using System.Windows;
 
 namespace CourseProjectDataBaseCars
 {
-    public class CreditNodeComparer : IEqualityComparer<CreditNode>
-    {
-        public bool Equals([AllowNull] CreditNode x, [AllowNull] CreditNode y)
-        {
-            return x.BankId == y.BankId;
-        }
-
-        public int GetHashCode([DisallowNull] CreditNode obj)
-        {
-            return base.GetHashCode();
-        }
-    }
-    public class CreditNode
-    {
-        public Bank Bank { get; set; }
-        public int BankId { get; set; }
-        public float Rate { get; set; }
-        public int Expiration { get; set; }
-        public ObservableCollection<Credit> Children { get; set; } = new ObservableCollection<Credit>();
-    }
-
     public class BanksPageViewModel : BaseViewModel
     {
         public BanksPageViewModel()
@@ -46,7 +25,6 @@ namespace CourseProjectDataBaseCars
         #region Public Properties
 
         public List<Bank> BankItems { get; set; } = new List<Bank>();
-        public string BankName { get; set; }
 
         #endregion
 
