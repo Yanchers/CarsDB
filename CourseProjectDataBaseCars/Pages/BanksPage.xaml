@@ -7,7 +7,7 @@
       xmlns:local="clr-namespace:CourseProjectDataBaseCars"
       mc:Ignorable="d"
       Height="490" Width="600"
-      Title="Банки">
+      Title="Банки" x:Name="banksPage">
     
     <Grid>
         <Grid.RowDefinitions>
@@ -18,9 +18,16 @@
 
         <TextBlock Text="Доступные банки" FontSize="50" HorizontalAlignment="Center"/>
 
-        <Button Command="{Binding CreateBankCommand}" Grid.Row="1" FontSize="26" Content="Создать банк" Padding="8 2" Margin="30 0"/>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Button Command="{Binding CreateBankCommand}" FontSize="26" Content="Создать банк" Margin="30 0"/>
+            <Button Command="{Binding DeleteBankCommand}" Grid.Column="1" FontSize="26" Content="Удалить банк" Margin="30 0"/>
+        </Grid>
 
-        <ListBox Grid.Row="2" ItemsSource="{Binding BankItems}">
+        <ListBox Grid.Row="2" ItemsSource="{Binding BankItems}" SelectedIndex="{Binding SelectedBankIndex}">
             <ListBox.Template>
                 <ControlTemplate>
                     <DockPanel LastChildFill="True">
@@ -35,14 +42,14 @@
                         </Grid>
                         
                         <ScrollViewer HorizontalScrollBarVisibility="Disabled">
-                            <ItemsPresenter></ItemsPresenter>
+                            <ItemsPresenter x:Name="BankItemsPresenter"></ItemsPresenter>
                         </ScrollViewer>
                     </DockPanel>
                 </ControlTemplate>
             </ListBox.Template>
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <Grid Width="{Binding ElementName=bankListDockPanel, Path=ActualWidth}" TextBlock.FontSize="25">
+                    <Grid Width="{Binding ElementName=BankItemsPresenter, Path=ActualWidth}" TextBlock.FontSize="25">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="0.4*"/>
                             <ColumnDefinition/>
@@ -55,19 +62,23 @@
                         <TextBlock Grid.Column="1" Text="{Binding Name}"/>
 
                         <Expander Grid.Row="1" Grid.ColumnSpan="2" Header="Показать кредиты">
-                            <ListBox ItemsSource="{Binding Credits}" Width="{Binding ElementName=bankListDockPanel, Path=ActualWidth}">
+                            <ListBox ItemsSource="{Binding Credits}" Width="{Binding ElementName=BankItemsPresenter, Path=ActualWidth}">
                                 <ListBox.Template>
                                     <ControlTemplate>
                                         <DockPanel LastChildFill="True">
-                                            <Grid DockPanel.Dock="Top" Width="{Binding ElementName=bankListDockPanel, Path=ActualWidth}" TextBlock.FontSize="16">
+                                            <Grid DockPanel.Dock="Top" Width="{Binding ElementName=BankItemsPresenter, Path=ActualWidth}" TextBlock.FontSize="16">
                                                 <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="0.4*"/>
+                                                    <ColumnDefinition Width="0.6*"/>
+                                                    <ColumnDefinition Width="0.6*"/>
                                                     <ColumnDefinition/>
                                                     <ColumnDefinition/>
                                                 </Grid.ColumnDefinitions>
                                                 <TextBlock Text="ID Кредита"/>
                                                 <TextBlock Grid.Column="1" Text="Ставка (%)"/>
                                                 <TextBlock Grid.Column="2" Text="Срок истечения (дни)"/>
+                                                <Button Command="{Binding Path=DataContext.AddCreditCommand, ElementName=banksPage}" 
+                                                        CommandParameter="{Binding DataContext.Id, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                                                    Grid.Column="3" Content="Добавить" VerticalAlignment="Center" HorizontalAlignment="Center" Width="80"/>
                                             </Grid>
                                             <ItemsPresenter></ItemsPresenter>
                                         </DockPanel>
@@ -75,9 +86,10 @@
                                 </ListBox.Template>
                                 <ListBox.ItemTemplate>
                                     <DataTemplate>
-                                        <Grid TextBlock.FontSize="18" Width="{Binding ElementName=bankListDockPanel, Path=ActualWidth}">
+                                        <Grid TextBlock.FontSize="18" Width="{Binding ElementName=BankItemsPresenter, Path=ActualWidth}">
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="0.4*"/>
+                                                <ColumnDefinition Width="0.6*"/>
+                                                <ColumnDefinition Width="0.6*"/>
                                                 <ColumnDefinition/>
                                                 <ColumnDefinition/>
                                             </Grid.ColumnDefinitions>
@@ -85,6 +97,7 @@
                                             <TextBlock Text="{Binding Id}"/>
                                             <TextBlock Grid.Column="1" Text="{Binding Rate}"/>
                                             <TextBlock Grid.Column="2" Text="{Binding Expiration}"/>
+                                            <Button Grid.Column="3" Content="-" VerticalAlignment="Center" HorizontalAlignment="Center" Width="40" Margin="0 0 10 0"/>
                                         </Grid>
                                     </DataTemplate>
                                 </ListBox.ItemTemplate>

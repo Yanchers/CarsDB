@@ -17,6 +17,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Windows\AddCreditWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Windows\AddBankWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -37,6 +40,10 @@
     </Page>
     <Page Update="Pages\FactoriesPage.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
+    <Page Update="Windows\AddCreditWindow.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
     </Page>
     <Page Update="Windows\AddBankWindow.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>

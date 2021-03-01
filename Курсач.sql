@@ -383,12 +383,40 @@ create trigger Dealer.OnFactoryDelete
 on Dealer.Factories
 instead of delete
 as begin
-	declare @id int = (select top(1) id from deleted)
-	print @id
 	if not exists(select * from Dealer.Factories
 					join deleted on Factories.id = deleted.id)
-		raiserror('Завода(-ов) с id (%d) не существует.', 14, 1, @id)
+		raiserror('Завода(-ов) с указанным id не существует.', 14, 1)
 	else
 		delete from Dealer.Factories
+		where id in (select id from deleted)
+end
+
+drop trigger Dealer.OnBankDelete
+go
+create trigger Dealer.OnBankDelete
+on Dealer.Banks
+instead of delete
+as begin
+	if not exists(select * from Dealer.Banks
+					join deleted on Banks.id = deleted.id)
+		raiserror('Указанных банков не существует.', 14, 1)
+	else
+		delete from Dealer.Banks
+		where id in (select id from deleted)
+end
+select * from Dealer.Banks
+delete from Dealer.Banks
+where [name] = 'ХДДД'
+
+go -- Наверное не надо ======================== !!!
+create trigger Dealer.OnCreditDelete
+on Dealer.Credits
+instead of delete
+as begin
+	if not exists(select * from Dealer.Credits
+					join deleted on Credits.id = deleted.id)
+		raiserror('Указанных кредитов не существует.', 14, 1)
+	else
+		delete from Dealer.Credits
 		where id in (select id from deleted)
 end
