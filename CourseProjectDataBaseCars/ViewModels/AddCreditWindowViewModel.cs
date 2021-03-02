@@ -17,7 +17,7 @@ namespace CourseProjectDataBaseCars
 
         public Credit Credit { get; set; }
 
-        private void CreateCredit(object param)
+        private void CreateCredit(object param) // TODO: Добавить проверку на дубликат !!!
         {
             try
             {

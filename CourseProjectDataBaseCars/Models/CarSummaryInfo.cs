@@ -6,6 +6,8 @@ namespace CourseProjectDataBaseCars
 {
     public class CarSummaryInfo
     {
+        public int FactoryId { get; set; }
+        public int CreditId { get; set; }
         public decimal CarCost { get; set; }
         public decimal TotalCost { get; set; }
         public decimal MonthlyPay { get; set; }

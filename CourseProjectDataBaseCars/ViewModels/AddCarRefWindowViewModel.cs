@@ -13,15 +13,18 @@ namespace CourseProjectDataBaseCars
         public AddCarRefWindowViewModel(int id)
         {
             using var context = new CarDealerContext();
-            FactoryItems = context.Factories.ToList();
-            CreditItems = context.Credits.Include(c => c.Bank).ToList();
+            FactoryItems = context.Factories.OrderBy(f => f.Country).ToList();
+            CreditItems = context.Credits.Include(c => c.Bank).OrderBy(c => c.Bank.Name).ToList();
 
             CarId = id;
 
             AddRefCommand = new RelayCommand(AddRef);
         }
+        #region Private Properties
 
         private int CarId;
+
+        #endregion
 
         #region Public Properties
 

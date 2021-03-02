@@ -97,7 +97,8 @@
                                             <TextBlock Text="{Binding Id}"/>
                                             <TextBlock Grid.Column="1" Text="{Binding Rate}"/>
                                             <TextBlock Grid.Column="2" Text="{Binding Expiration}"/>
-                                            <Button Grid.Column="3" Content="-" VerticalAlignment="Center" HorizontalAlignment="Center" Width="40" Margin="0 0 10 0"/>
+                                            <Button Command="{Binding Path=DataContext.DeleteCreditCommand, ElementName=banksPage}" CommandParameter="{Binding Id}"
+                                                Grid.Column="3" Content="-" VerticalAlignment="Center" HorizontalAlignment="Center" Width="40" Margin="0 0 10 0"/>
                                         </Grid>
                                     </DataTemplate>
                                 </ListBox.ItemTemplate>

@@ -104,7 +104,6 @@ insert into Dealer.CarsCredits values
 (4, 3)
 
 select * from Dealer.CarsCredits
-where carId = 2
 select * from Dealer.CarsFactories
 delete top(1) from Dealer.CarsCredits
 where carId = 6 and creditId = 5
@@ -154,6 +153,8 @@ create function Dealer.GetCarInfo
 (@model nvarchar(50))
 returns @ret table
 (
+	creditId int,
+	factoryId int,
 	carCost money,
 	totalCost money,
 	monthlyPay money, 
@@ -166,44 +167,44 @@ returns @ret table
 )
 as begin
 	declare @carId int = (select id from Dealer.Cars where [name] = @model)
-	declare @months int, @percent float, @bankId int
+	declare @creditId int, @months int, @percent float, @bankId int
 	declare creditCursor cursor local
 	for 
-	select expiration, rate, bankId from Dealer.Credits
+	select id, expiration, rate, bankId from Dealer.Credits
 	join Dealer.CarsCredits on CarsCredits.creditId = Credits.id
 	where carId = @carId
 
 	open creditCursor
 
-	fetch next from creditCursor into @months, @percent, @bankId
+	fetch next from creditCursor into @creditId, @months, @percent, @bankId
 	while @@FETCH_STATUS = 0
 	begin
 		declare @cost money = (select cost from Dealer.Cars where id = @carId)
 		declare @bankName nvarchar(50) = (select [name] from Dealer.Banks where id = @bankId)
-		declare @country nvarchar(50), @city nvarchar(50), @arrival int, @transpCost money
+		declare @factoryId int, @country nvarchar(50), @city nvarchar(50), @arrival int, @transpCost money
 		declare factoriesCursor cursor local
 		for
-		select country, city, deliveryTime, transpCost from Dealer.Factories
+		select id, country, city, deliveryTime, transpCost from Dealer.Factories
 		join Dealer.CarsFactories on factoryId = id
 		where carId = @carId
 
 		open factoriesCursor
-		fetch next from factoriesCursor into @country, @city, @arrival, @transpCost
+		fetch next from factoriesCursor into @factoryId, @country, @city, @arrival, @transpCost
 		while @@FETCH_STATUS = 0
 		begin
 			insert into @ret values
-			(@cost,
+			(@creditId, @factoryId, @cost,
 			round(@cost + Dealer.GetPercents(@cost, @months, @percent) + @transpCost, 2),
 			round(Dealer.GetMonthlyPay(@cost, @months, @percent), 2),
 			dateadd(month, @months, GETDATE()),
 			@bankName, @country, @city, @transpCost, dateadd(day, @arrival, GETDATE()))
 
-			fetch next from factoriesCursor into @country, @city, @arrival, @transpCost
+			fetch next from factoriesCursor into @factoryId, @country, @city, @arrival, @transpCost
 		end
 		close factoriesCursor
 		deallocate factoriesCursor
 
-		fetch next from creditCursor into @months, @percent, @bankId
+		fetch next from creditCursor into @creditId, @months, @percent, @bankId
 	end
 
 	close creditCursor

@@ -16,11 +16,12 @@ namespace CourseProjectDataBaseCars
         {
             using var context = new CarDealerContext();
 
-            BankItems = context.Banks.Include(b => b.Credits).ToList();
+            BankItems = context.Banks.Include(b => b.Credits).OrderBy(b => b.Name).ToList();
 
             AddCreditCommand = new RelayCommand(AddCredit);
             CreateBankCommand = new RelayCommand(CreateBank);
             DeleteBankCommand = new RelayCommand(DeleteBank);
+            DeleteCreditCommand = new RelayCommand(DeleteCredit);
         }
 
         #region Public Properties
@@ -32,11 +33,18 @@ namespace CourseProjectDataBaseCars
 
         #region Private Methods
 
+        private void UpdateItems()
+        {
+            using var context = new CarDealerContext();
+            BankItems = context.Banks.Include(b => b.Credits).OrderBy(b => b.Name).ToList();
+        }
         private void CreateBank(object param)
         {
             var window = new AddBankWindow();
             if ((bool)window.ShowDialog())
                 MessageBox.Show("Банк успешно создан.", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
+            
+            UpdateItems();
         }
         private void DeleteBank(object param)
         {
@@ -46,6 +54,8 @@ namespace CourseProjectDataBaseCars
                 using var context = new CarDealerContext();
                 context.Banks.Remove(context.Banks.Find(BankItems[SelectedBankIndex].Id));
                 context.SaveChanges();
+
+                UpdateItems();
             }
             catch (Exception e)
             {
@@ -56,10 +66,27 @@ namespace CourseProjectDataBaseCars
         {
             var window = new AddCreditWindow((int)bankId);
             if ((bool)window.ShowDialog())
-                MessageBox.Show($"Кредит успешно добавлен в банк {BankItems.Find(b=>b.Id == ((AddCreditWindowViewModel)window.DataContext).Credit.BankId).Name}.", 
+                MessageBox.Show($"Кредит успешно добавлен в банк {BankItems.Find(b => b.Id == ((AddCreditWindowViewModel)window.DataContext).Credit.BankId).Name}.",
                     "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
+
+            UpdateItems();
         }
-        private void Delete
+        private void DeleteCredit(object creditId)
+        {
+            if (creditId == null) return;
+            try
+            {
+                using var context = new CarDealerContext();
+                context.Credits.Remove(context.Credits.Find((int)creditId));
+                context.SaveChanges();
+
+                UpdateItems();
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message, "Внимание", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+            }
+        }
 
         #endregion
 
@@ -68,6 +95,7 @@ namespace CourseProjectDataBaseCars
         public RelayCommand CreateBankCommand { get; set; }
         public RelayCommand DeleteBankCommand { get; set; }
         public RelayCommand AddCreditCommand { get; set; }
+        public RelayCommand DeleteCreditCommand { get; set; }
 
         #endregion
 

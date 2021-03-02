@@ -7,6 +7,7 @@
       xmlns:local="clr-namespace:CourseProjectDataBaseCars"
       mc:Ignorable="d"
       Height="600" Width="1100"
+      x:Name="carPage"
       Title="CarPage">
 
     <Grid>
@@ -64,22 +65,112 @@
             
         </Grid>
 
-        <Grid Grid.Row="1">
-            <DataGrid ItemsSource="{Binding CarInfoCollection}" SelectedIndex="{Binding SelectedSummary}" FontSize="30" AutoGenerateColumns="False"
+        <!--<DataGrid Grid.Row="1" ItemsSource="{Binding CarInfoCollection}" SelectedIndex="{Binding SelectedSummary}" FontSize="30" AutoGenerateColumns="False"
                       CanUserAddRows="False" CanUserDeleteRows="False" ColumnWidth="*" CanUserResizeColumns="False" IsReadOnly="True" SelectionMode="Single">
-                <DataGrid.Columns>
-                    <DataGridTextColumn Binding="{Binding BankName}" Header="Банк"/>
-                    <DataGridTextColumn Binding="{Binding Expiration}" Header="Конец кредита"/>
-                    <DataGridTextColumn Binding="{Binding Country}" Header="Страна"/>
-                    <DataGridTextColumn Binding="{Binding City}"  Header="Город"/>
-                    <DataGridTextColumn Binding="{Binding TranspCost, StringFormat={}{0} руб.}" Header="Доставка"/>
-                    <DataGridTextColumn Binding="{Binding Arrival}" Header="Дата доставки"/>
-                </DataGrid.Columns>
-            </DataGrid>
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding BankName}" Header="Банк"/>
+                <DataGridTextColumn Binding="{Binding Expiration}" Header="Конец кредита"/>
+                <DataGridTextColumn Binding="{Binding Country}" Header="Страна"/>
+                <DataGridTextColumn Binding="{Binding City}"  Header="Город"/>
+                <DataGridTextColumn Binding="{Binding TranspCost, StringFormat={}{0} руб.}" Header="Доставка"/>
+                <DataGridTextColumn Binding="{Binding Arrival}" Header="Дата доставки"/>
+            </DataGrid.Columns>
+        </DataGrid>-->
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <ListBox Margin="5 0">
+                <ListBox.Template>
+                    <ControlTemplate>
+                        <DockPanel LastChildFill="True">
+                            <Grid DockPanel.Dock="Top" TextBlock.FontSize="20" Name="carPageCredits">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <Button Content="Банк"/>
+                                <Button Grid.Column="1" Content="Ставка (%)"/>
+                                <Button Grid.Column="2" Content="Срок (год)"/>
+                            </Grid>
+                            <ScrollViewer>
+                                <ItemsPresenter></ItemsPresenter>
+                            </ScrollViewer>
+                        </DockPanel>
+                    </ControlTemplate>
+                </ListBox.Template>
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Width="{Binding ActualWidth, ElementName=carPageCredits}" TextBlock.FontSize="23">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="{Binding Bank.Name}"/>
+                            <TextBlock Grid.Column="1" Text="{Binding Rate}"/>
+                            <TextBlock Grid.Column="2" Text="{Binding Expiration}"/>
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+            <ListBox Grid.Column="1" Margin="5 0">
+                <ListBox.Template>
+                    <ControlTemplate>
+                        <DockPanel LastChildFill="True">
+                            <Grid DockPanel.Dock="Top" TextBlock.FontSize="20">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <Button Content="Страна"/>
+                                <Button Grid.Column="1" Content="Город"/>
+                                <Button Grid.Column="2" Content="Доставка"/>
+                                <Button Grid.Column="3" Content="Время доставки"/>
+                            </Grid>
+                            <ScrollViewer>
+                                <ItemsPresenter></ItemsPresenter>
+                            </ScrollViewer>
+                        </DockPanel>
+                    </ControlTemplate>
+                </ListBox.Template>
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="{Binding Country}"/>
+                            <TextBlock Grid.Column="1" Text="{Binding City}"/>
+                            <TextBlock Grid.Column="2" Text="{Binding TranspCost}"/>
+                            <TextBlock Grid.Column="3" Text="{Binding DeliveryTime}"/>
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
         </Grid>
 
-        <Button Command="{Binding AddRefCommand}" Grid.Row="2" Content="Добавить связь" FontSize="20" VerticalAlignment="Center" Margin="0 10"/>
-
+        <Grid Grid.Row="2" Margin="0 15">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Button Command="{Binding AddRefCommand}" 
+                Content="Добавить связь" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Center" Width="210" Padding="0 10"/>
+            <Button Command="{Binding DeleteCreditRefCommand}" 
+                Grid.Column="1" Content="Удалить связь с кредитом" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Center" Width="250" Padding="0 10"/>
+            <Button Command="{Binding DeleteFactoryRefCommand}" 
+                Grid.Column="2" Content="Удалить связь с заводом" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Center" Width="250" Padding="0 10"/>
+        </Grid>
+        
         <!--<Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>

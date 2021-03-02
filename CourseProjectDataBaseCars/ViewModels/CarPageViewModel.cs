@@ -18,10 +18,12 @@ namespace CourseProjectDataBaseCars
         {
             CurrentCar = ApplicationViewModel.Instance.PageParam as Car;
 
-            LoadInfo();
+            UpdateData();
 
             PreviousPageCommand = new RelayCommand(param => ApplicationViewModel.Instance.CurrentPage = PageTypes.Catalog);
             AddRefCommand = new RelayCommand(AddRef);
+            DeleteCreditRefCommand = new RelayCommand(DeleteCreditRef);
+            DeleteFactoryRefCommand = new RelayCommand(DeleteFactoryRef);
         }
 
         private int mSelectedSummary { get; set; }
@@ -45,6 +47,8 @@ namespace CourseProjectDataBaseCars
         }
         public ICollectionView CarInfoCollection { get; set; }
         public Car CurrentCar { get; set; }
+        public List<Credit> CreditItems { get; set; }
+        public List<Factory> FactoryItems { get; set; }
 
         #endregion
 
@@ -55,16 +59,43 @@ namespace CourseProjectDataBaseCars
             if ((bool)carRef.ShowDialog())
                 MessageBox.Show("Модель связана.", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
 
-            LoadInfo();
+            UpdateData();
         }
-        private void LoadInfo()
+        private void DeleteCreditRef(object param)
         {
+            if (SelectedSummary == -1) return;
+
+            using var context = new CarDealerContext();
+
+            context.CarsCredits.Remove(context.CarsCredits.Find(CurrentCar.Id, CarInfoCollection.Cast<CarSummaryInfo>().ElementAt(SelectedSummary).CreditId));
+            context.SaveChanges();
+
+            UpdateData();
+        }
+        private void DeleteFactoryRef(object param)
+        {
+            if (SelectedSummary == -1) return;
+
+            using var context = new CarDealerContext();
+
+            context.CarsFactories.Remove(context.CarsFactories.Find(CurrentCar.Id, CarInfoCollection.Cast<CarSummaryInfo>().ElementAt(SelectedSummary).FactoryId));
+            context.SaveChanges();
+
+            UpdateData();
+        }
+        private void UpdateData()
+        {
+            using (var context = new CarDealerContext())
+            {
+                CreditItems = context.Cars.Find(CurrentCar.Id).CarsCredits.
+            }
+
             var infoCollection = new ObservableCollection<CarSummaryInfo>();
 
             var builder = new ConfigurationBuilder();
             builder.SetBasePath(System.IO.Directory.GetCurrentDirectory());
             builder.AddJsonFile("appsettings.json");
-            using (var connection = new SqlConnection(builder.Build().GetConnectionString("DefaultConnection")))
+            using (var connection = new SqlConnection(builder.Build().GetConnectionString("NonaConnection")))
             {
                 connection.Open();
                 var command = new SqlCommand($"select * from Dealer.GetCarInfo('{CurrentCar.Name}')", connection);
@@ -74,15 +105,17 @@ namespace CourseProjectDataBaseCars
                 {
                     var info = new CarSummaryInfo()
                     {
-                        CarCost = (decimal)reader.GetValue(0),
-                        TotalCost = (decimal)reader.GetValue(1),
-                        MonthlyPay = (decimal)reader.GetValue(2),
-                        Expiration = ((DateTime)reader.GetValue(3)).ToShortDateString(),
-                        BankName = reader.GetValue(4).ToString(),
-                        Country = reader.GetValue(5).ToString(),
-                        City = reader.GetValue(6).ToString(),
-                        TranspCost = (decimal)reader.GetValue(7),
-                        Arrival = ((DateTime)reader.GetValue(8)).ToShortDateString()
+                        CreditId = (int)reader.GetValue(0),
+                        FactoryId = (int)reader.GetValue(1),
+                        CarCost = (decimal)reader.GetValue(2),
+                        TotalCost = (decimal)reader.GetValue(3),
+                        MonthlyPay = (decimal)reader.GetValue(4),
+                        Expiration = ((DateTime)reader.GetValue(5)).ToShortDateString(),
+                        BankName = reader.GetValue(6).ToString(),
+                        Country = reader.GetValue(7).ToString(),
+                        City = reader.GetValue(8).ToString(),
+                        TranspCost = (decimal)reader.GetValue(9),
+                        Arrival = ((DateTime)reader.GetValue(10)).ToShortDateString()
                     };
                     infoCollection.Add(info);
                 }
@@ -94,9 +127,16 @@ namespace CourseProjectDataBaseCars
                 TotalCost = (float)infoCollection[0].TotalCost;
                 MonthlyPay = (float)infoCollection[0].MonthlyPay;
             }
+            else
+            {
+                TotalCost = (float)CurrentCar.Cost;
+                MonthlyPay = 0;
+            }
         }
 
         public RelayCommand PreviousPageCommand { get; private set; }
         public RelayCommand AddRefCommand { get; private set; }
+        public RelayCommand DeleteCreditRefCommand { get; private set; }
+        public RelayCommand DeleteFactoryRefCommand { get; private set; }
     }
 }
