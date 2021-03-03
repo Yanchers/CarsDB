@@ -6,7 +6,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:CourseProjectDataBaseCars"
       mc:Ignorable="d"
-      Height="600" Width="1100"
+      Height="600" Width="1200"
       x:Name="carPage"
       Title="CarPage">
 
@@ -81,7 +81,7 @@
                 <ColumnDefinition/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <ListBox Margin="5 0">
+            <ListBox Margin="5 0" ItemsSource="{Binding CreditItems}" SelectedIndex="{Binding SelectedCredit}">
                 <ListBox.Template>
                     <ControlTemplate>
                         <DockPanel LastChildFill="True">
@@ -95,7 +95,7 @@
                                 <Button Grid.Column="1" Content="Ставка (%)"/>
                                 <Button Grid.Column="2" Content="Срок (год)"/>
                             </Grid>
-                            <ScrollViewer>
+                            <ScrollViewer HorizontalScrollBarVisibility="Disabled">
                                 <ItemsPresenter></ItemsPresenter>
                             </ScrollViewer>
                         </DockPanel>
@@ -109,18 +109,18 @@
                                 <ColumnDefinition/>
                                 <ColumnDefinition/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Text="{Binding Bank.Name}"/>
-                            <TextBlock Grid.Column="1" Text="{Binding Rate}"/>
-                            <TextBlock Grid.Column="2" Text="{Binding Expiration}"/>
+                            <TextBlock Text="{Binding Bank.Name}" HorizontalAlignment="Center"/>
+                            <TextBlock Grid.Column="1" Text="{Binding Rate}" HorizontalAlignment="Center"/>
+                            <TextBlock Grid.Column="2" Text="{Binding Expiration}" HorizontalAlignment="Center"/>
                         </Grid>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
-            <ListBox Grid.Column="1" Margin="5 0">
+            <ListBox Grid.Column="1" Margin="5 0" ItemsSource="{Binding FactoryItems}" SelectedIndex="{Binding SelectedFactory}">
                 <ListBox.Template>
                     <ControlTemplate>
                         <DockPanel LastChildFill="True">
-                            <Grid DockPanel.Dock="Top" TextBlock.FontSize="20">
+                            <Grid DockPanel.Dock="Top" TextBlock.FontSize="20" Name="carPageFactories">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition/>
                                     <ColumnDefinition/>
@@ -132,7 +132,7 @@
                                 <Button Grid.Column="2" Content="Доставка"/>
                                 <Button Grid.Column="3" Content="Время доставки"/>
                             </Grid>
-                            <ScrollViewer>
+                            <ScrollViewer HorizontalScrollBarVisibility="Disabled">
                                 <ItemsPresenter></ItemsPresenter>
                             </ScrollViewer>
                         </DockPanel>
@@ -140,17 +140,17 @@
                 </ListBox.Template>
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <Grid>
+                        <Grid Width="{Binding Path=ActualWidth, ElementName=carPageFactories}" TextBlock.FontSize="23">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition/>
                                 <ColumnDefinition/>
                                 <ColumnDefinition/>
                                 <ColumnDefinition/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Text="{Binding Country}"/>
-                            <TextBlock Grid.Column="1" Text="{Binding City}"/>
-                            <TextBlock Grid.Column="2" Text="{Binding TranspCost}"/>
-                            <TextBlock Grid.Column="3" Text="{Binding DeliveryTime}"/>
+                            <TextBlock Text="{Binding Country}" HorizontalAlignment="Center"/>
+                            <TextBlock Grid.Column="1" Text="{Binding City}" HorizontalAlignment="Center"/>
+                            <TextBlock Grid.Column="2" Text="{Binding TranspCost}" HorizontalAlignment="Center"/>
+                            <TextBlock Grid.Column="3" Text="{Binding DeliveryTime}" HorizontalAlignment="Center"/>
                         </Grid>
                     </DataTemplate>
                 </ListBox.ItemTemplate>

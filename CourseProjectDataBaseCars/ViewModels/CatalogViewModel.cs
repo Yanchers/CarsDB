@@ -34,11 +34,13 @@ namespace CourseProjectDataBaseCars
         public CatalogViewModel()
         {
             using var context = new CarDealerContext();
-            CarItems = context.Cars.ToList().OrderBy(c => c.Name).ToList();
+
+            CarItems = context.Cars.ToList();
+            allFactories = context.Factories.ToList();
             DownBorder = Math.Round(context.Cars.Min((c) => c.Cost));
             UpperBorder = Math.Round(context.Cars.Max((c) => c.Cost));
 
-            FactoryItems = new ObservableCollection<FactoryBoolPair>(context.Factories.Select((f) => new FactoryBoolPair(f, true)));
+            FactoryItems = new ObservableCollection<FactoryBoolPair>(allFactories.Select((f) => new FactoryBoolPair(f, true)));
 
             ApplyFilterCommand = new RelayCommand(name => Filter((string)name));
             SelectCarCommand = new RelayCommand(param => SelectCar((int)param));
@@ -50,8 +52,9 @@ namespace CourseProjectDataBaseCars
         #region Private Properties
 
         private List<Car> mCarItems = new List<Car>();
+        private readonly List<Factory> allFactories;
         private int mSelectedSorting;
-        private int mSelectedGrouping;
+        //private int mSelectedGrouping;
 
         #endregion
 
@@ -96,7 +99,7 @@ namespace CourseProjectDataBaseCars
 
         private void SelectCar(int id)
         {
-            ApplicationViewModel.Instance.PageParam = CarItems.Find(c=>c.Id == id);
+            ApplicationViewModel.Instance.PageParam = id;
             ApplicationViewModel.Instance.CurrentPage = PageTypes.Car;
         }
         private void SelectAllFactories()
@@ -107,19 +110,21 @@ namespace CourseProjectDataBaseCars
         private void Filter(string name)
         {
             using var context = new CarDealerContext();
-            var factories = FactoryItems.Where(f => f.Value).Select(f => new Factory(f.Key));
-            var factoryCars = (from f in factories
-                            join cf in context.CarsFactories on f.Id equals cf.FactoryId
-                            join c in context.Cars on cf.CarId equals c.Id
-                            select new Car(c)).Distinct(new CarComparer());
-            var factoryCarsAll = (from f in context.Factories.ToList()
+
+            var selectedFactories = FactoryItems.Where(f => f.Value).Select(f => new Factory(f.Key));
+
+            var selectedFactoryCars = (from f in selectedFactories
                                   join cf in context.CarsFactories on f.Id equals cf.FactoryId
                                   join c in context.Cars on cf.CarId equals c.Id
-                                  select new Car(c)).Distinct(new CarComparer());
+                                  select new Car(c)).Distinct(new CarComparer()).AsQueryable();
+
+            var factoryCarsAll = context.Cars.Join(context.CarsFactories, c => c.Id, cf => cf.CarId, (c, cf) => c);
+
             var nameCars = context.GetCarsByName(name);
             var priceCars = context.GetCarsByPrice((float)UpperBorder, (float)DownBorder);
 
-            CarItems = factoryCars.Intersect(priceCars, new CarComparer()).Intersect(nameCars, new CarComparer()).ToList();
+            CarItems = selectedFactoryCars.Intersect(priceCars, new CarComparer()).Intersect(nameCars, new CarComparer()).ToList();
+
             if (HasFactory) CarItems.AddRange(context.Cars.ToList().Except(factoryCarsAll, new CarComparer()).Intersect(nameCars, new CarComparer()));
 
             SortBy((SortingTypes)SelectedSorting);
@@ -146,6 +151,8 @@ namespace CourseProjectDataBaseCars
             var window = new AddCarWindow();
             if ((bool)window.ShowDialog())
                 MessageBox.Show("Модель успешно создана.", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
+
+            CarItems = new CarDealerContext().Cars.ToList();
         }
         //private void GroupBy(GroupingTypes type)
         //{

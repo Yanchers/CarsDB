@@ -16,7 +16,7 @@ namespace CourseProjectDataBaseCars
     {
         public CarPageViewModel()
         {
-            CurrentCar = ApplicationViewModel.Instance.PageParam as Car;
+            mCarId = (int)ApplicationViewModel.Instance.PageParam;
 
             UpdateData();
 
@@ -26,32 +26,59 @@ namespace CourseProjectDataBaseCars
             DeleteFactoryRefCommand = new RelayCommand(DeleteFactoryRef);
         }
 
-        private int mSelectedSummary { get; set; }
+        #region Private Properties
 
-        #region Public Properties
-
-        public float TotalCost { get; set; }
-        public float MonthlyPay { get; set; }
-        public int SelectedSummary
-        {
-            get => mSelectedSummary;
-            set
-            {
-                if (value < 0) return;
-                var temp = CarInfoCollection.Cast<CarSummaryInfo>().ElementAt(value);
-                TotalCost = (float)temp.TotalCost;
-                MonthlyPay = (float)temp.MonthlyPay;
-
-                mSelectedSummary = value;
-            }
-        }
-        public ICollectionView CarInfoCollection { get; set; }
-        public Car CurrentCar { get; set; }
-        public List<Credit> CreditItems { get; set; }
-        public List<Factory> FactoryItems { get; set; }
+        private int mCarId;
+        private int mSelectedFactory;
+        private int mSelectedCredit;
 
         #endregion
 
+        #region Public Properties
+
+        public Car CurrentCar { get; set; }
+        public List<CarSummaryInfo> CarInfoCollection { get; set; } = new List<CarSummaryInfo>();
+        public List<Credit> CreditItems { get; set; } = new List<Credit>();
+        public List<Factory> FactoryItems { get; set; } = new List<Factory>();
+
+        public float TotalCost { get; set; }
+        public float MonthlyPay { get; set; }
+
+        public int SelectedFactory
+        {
+            get => mSelectedFactory;
+            set
+            {
+                if (value == -1) return;
+
+                mSelectedFactory = value;
+                SetInfo();
+            }
+        }
+        public int SelectedCredit
+        {
+            get => mSelectedCredit;
+            set
+            {
+                if (value == -1) return;
+
+                mSelectedCredit = value;
+                SetInfo();
+            }
+        }
+
+        #endregion
+
+        #region Private Methods
+
+        private void SetInfo()
+        {
+            if (CarInfoCollection.Count < 0) return;
+
+            var info = CarInfoCollection.Find(c => c.FactoryId == FactoryItems[SelectedFactory].Id && c.CreditId == CreditItems[SelectedCredit].Id);
+            TotalCost = (float)info.TotalCost;
+            MonthlyPay = (float)info.MonthlyPay;
+        }
         private void AddRef(object param)
         {
             var carRef = new AddCarRefWindow(CurrentCar.Id);
@@ -63,22 +90,22 @@ namespace CourseProjectDataBaseCars
         }
         private void DeleteCreditRef(object param)
         {
-            if (SelectedSummary == -1) return;
+            if (SelectedCredit == -1) return;
 
             using var context = new CarDealerContext();
 
-            context.CarsCredits.Remove(context.CarsCredits.Find(CurrentCar.Id, CarInfoCollection.Cast<CarSummaryInfo>().ElementAt(SelectedSummary).CreditId));
+            context.CarsCredits.Remove(context.CarsCredits.Find(CurrentCar.Id, CreditItems[SelectedCredit].Id));
             context.SaveChanges();
 
             UpdateData();
         }
         private void DeleteFactoryRef(object param)
         {
-            if (SelectedSummary == -1) return;
+            if (SelectedFactory == -1) return;
 
             using var context = new CarDealerContext();
 
-            context.CarsFactories.Remove(context.CarsFactories.Find(CurrentCar.Id, CarInfoCollection.Cast<CarSummaryInfo>().ElementAt(SelectedSummary).FactoryId));
+            context.CarsFactories.Remove(context.CarsFactories.Find(CurrentCar.Id, FactoryItems[SelectedFactory].Id));
             context.SaveChanges();
 
             UpdateData();
@@ -87,10 +114,19 @@ namespace CourseProjectDataBaseCars
         {
             using (var context = new CarDealerContext())
             {
-                CreditItems = context.Cars.Find(CurrentCar.Id).CarsCredits.
-            }
+                CurrentCar = context.Cars.Where(c => c.Id == mCarId)
+                    .Include(c => c.CarsFactories).ThenInclude(cf => cf.Factory)
+                    .Include(c => c.CarsCredits).ThenInclude(cc => cc.Credit).ThenInclude(c => c.Bank)
+                    .FirstOrDefault();
 
-            var infoCollection = new ObservableCollection<CarSummaryInfo>();
+                CreditItems.Clear();
+                foreach (var cc in CurrentCar.CarsCredits)
+                    CreditItems.Add(cc.Credit);
+
+                FactoryItems.Clear();
+                foreach (var cf in CurrentCar.CarsFactories)
+                    FactoryItems.Add(cf.Factory);
+            }
 
             var builder = new ConfigurationBuilder();
             builder.SetBasePath(System.IO.Directory.GetCurrentDirectory());
@@ -117,26 +153,33 @@ namespace CourseProjectDataBaseCars
                         TranspCost = (decimal)reader.GetValue(9),
                         Arrival = ((DateTime)reader.GetValue(10)).ToShortDateString()
                     };
-                    infoCollection.Add(info);
+                    CarInfoCollection.Add(info);
                 }
             }
 
-            CarInfoCollection = CollectionViewSource.GetDefaultView(infoCollection);
-            if (infoCollection.Count > 0)
+            if (CarInfoCollection.Count > 0)
             {
-                TotalCost = (float)infoCollection[0].TotalCost;
-                MonthlyPay = (float)infoCollection[0].MonthlyPay;
+                mSelectedCredit = 0;
+                mSelectedFactory = 0;
+
+                SetInfo();
             }
             else
             {
-                TotalCost = (float)CurrentCar.Cost;
+                TotalCost = (int)CurrentCar.Cost;
                 MonthlyPay = 0;
             }
         }
+
+        #endregion
+
+        #region Commands
 
         public RelayCommand PreviousPageCommand { get; private set; }
         public RelayCommand AddRefCommand { get; private set; }
         public RelayCommand DeleteCreditRefCommand { get; private set; }
         public RelayCommand DeleteFactoryRefCommand { get; private set; }
+
+        #endregion
     }
 }

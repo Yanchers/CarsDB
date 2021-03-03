@@ -28,6 +28,8 @@ namespace CourseProjectDataBaseCars
             var window = new AddFactoryWindow();
             if ((bool)window.ShowDialog())
                 MessageBox.Show("Завод успешно создан.", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
+
+            FactoryItems = new CarDealerContext().Factories.ToList();
         }
         private void DeleteFactory(object id)
         {
