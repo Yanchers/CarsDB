@@ -7,9 +7,7 @@
         mc:Ignorable="d" WindowStartupLocation="CenterScreen"
         Title="Создать" Height="310" Width="410"
         x:Name="addFactoryWindow">
-    <Window.DataContext>
-        <local:AddFactoryWindowViewModel/>
-    </Window.DataContext>
+    
     <Grid TextBlock.FontSize="23">
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
@@ -29,7 +27,8 @@
                 <RowDefinition/>
             </Grid.RowDefinitions>
             <TextBlock Text="Тип перевозки" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-            <ComboBox Grid.Row="1" VerticalAlignment="Center" Margin="60 0" ItemsSource="{Binding TranspTypeItems}" SelectedValue="{Binding Factory.Type, Converter={local:TranspEnumToStringConverter}}"/>
+            <ComboBox Grid.Row="1" VerticalAlignment="Center" Margin="60 0" 
+                      ItemsSource="{Binding TranspTypeItems}" SelectedValue="{Binding Factory.Type, Converter={local:TranspEnumToStringConverter}}"/>
         </Grid>
 
         <!--Страна размещения-->
@@ -73,6 +72,6 @@
         </Grid>
 
         <Button Command="{Binding CreateFactoryCommand}" CommandParameter="{Binding ElementName=addFactoryWindow}"
-                Grid.Row="3" Grid.ColumnSpan="2" Content="Создать" FontSize="25" VerticalAlignment="Center" Padding="5 10" Margin="10 0"/>
+                Grid.Row="3" Grid.ColumnSpan="2" Content="Подтвердить" FontSize="25" VerticalAlignment="Center" Padding="5 10" Margin="10 0"/>
     </Grid>
 </Window>

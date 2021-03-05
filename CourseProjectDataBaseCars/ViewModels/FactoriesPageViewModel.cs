@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,16 +13,19 @@ namespace CourseProjectDataBaseCars
     {
         public FactoriesPageViewModel()
         {
-            using var context = new CarDealerContext();
-            context.Cars.Load();
-            FactoryItems = context.Factories.Include(f => f.CarsFactories).ToList();
-
+            UpdateItems();
 
             CreateFactoryCommand = new RelayCommand(CreateFactory);
+            UpdateFactoryCommand = new RelayCommand(UpdateFactory);
             DeleteFactoryCommand = new RelayCommand(DeleteFactory);
         }
+        #region Public Properties
 
-        public List<Factory> FactoryItems { get; set; }
+        public ObservableCollection<Factory> FactoryItems { get; set; }
+
+        #endregion
+
+        #region Private Methods
 
         private void CreateFactory(object param)
         {
@@ -29,7 +33,15 @@ namespace CourseProjectDataBaseCars
             if ((bool)window.ShowDialog())
                 MessageBox.Show("Завод успешно создан.", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
 
-            FactoryItems = new CarDealerContext().Factories.ToList();
+            UpdateItems();
+        }
+        private void UpdateFactory(object id)
+        {
+            var window = new AddFactoryWindow((int)id);
+            if((bool)window.ShowDialog())
+                MessageBox.Show("Завод успешно создан.", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
+
+            UpdateItems();
         }
         private void DeleteFactory(object id)
         {
@@ -39,15 +51,30 @@ namespace CourseProjectDataBaseCars
 
                 context.Factories.Remove(context.Factories.Find((int)id));
                 context.SaveChanges();
-                FactoryItems = context.Factories.ToList();
+
+                UpdateItems();
             }
             catch (Exception e)
             {
                 MessageBox.Show(e.Message, "Внимание", MessageBoxButton.OK, MessageBoxImage.Exclamation);
             }
         }
+        private void UpdateItems()
+        {
+            using var context = new CarDealerContext();
+
+            FactoryItems = new ObservableCollection<Factory>(context.Factories.Include(f => f.CarsFactories).ThenInclude(cf => cf.Car));
+        }
+
+        #endregion
+
+        #region Commands
 
         public RelayCommand CreateFactoryCommand { get; private set; }
+        public RelayCommand UpdateFactoryCommand { get; private set; }
         public RelayCommand DeleteFactoryCommand { get; private set; }
+
+        #endregion
+
     }
 }

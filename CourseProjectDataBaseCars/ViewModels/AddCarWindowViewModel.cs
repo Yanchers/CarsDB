@@ -8,14 +8,15 @@ namespace CourseProjectDataBaseCars
 {
     class AddCarWindowViewModel : BaseViewModel
     {
-        public AddCarWindowViewModel()
+        public AddCarWindowViewModel(int id)
         {
+            Car = id == 0 ? new Car() : new CarDealerContext().Cars.Find(id);
+
             CreateCarCommand = new RelayCommand(CreateCar);
         }
 
 
-        public string CarName { get; set; }
-        public string CarCost { get; set; }
+        public Car Car { get; set; }
 
 
         private void CreateCar(object param)
@@ -23,7 +24,15 @@ namespace CourseProjectDataBaseCars
             try
             {
                 using var context = new CarDealerContext();
-                context.Database.ExecuteSqlInterpolated($"Dealer.AddCar {CarName}, {int.Parse(CarCost)}");
+
+                if (Car.Id == 0)
+                    context.Database.ExecuteSqlInterpolated($"Dealer.AddCar {Car.Name}, {Convert.ToInt32(Car.Cost)}");
+                else
+                {
+                    context.Cars.Update(Car);
+                    context.SaveChanges();
+                }
+
                 ((Window)param).DialogResult = true;
             }
             catch (Exception e)

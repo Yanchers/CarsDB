@@ -44,11 +44,11 @@
                                 <ColumnDefinition/>
                             </Grid.ColumnDefinitions>
                             <Button Command="{Binding CreateFactoryCommand}" Content="+" VerticalAlignment="Center" Margin="0 0 0 0"/>
-                            <TextBlock Grid.Column="1" Text="ID" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                            <TextBlock Grid.Column="2" Text="Тип доставки" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                            <TextBlock Grid.Column="3" Text="Размещение" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                            <TextBlock Grid.Column="4" Text="Время доставки" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                            <TextBlock Grid.Column="5" Text="Стоимость" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                            <TextBlock Grid.Column="1" Text="ID" VerticalAlignment="Center" TextAlignment="Center"/>
+                            <TextBlock Grid.Column="2" Text="Тип доставки" VerticalAlignment="Center" TextAlignment="Center"/>
+                            <TextBlock Grid.Column="3" Text="Размещение" VerticalAlignment="Center" TextAlignment="Center"/>
+                            <TextBlock Grid.Column="4" Text="Время доставки" VerticalAlignment="Center" TextAlignment="Center"/>
+                            <TextBlock Grid.Column="5" Text="Стоимость" VerticalAlignment="Center" TextAlignment="Center"/>
                         </Grid>
                         <ScrollViewer HorizontalScrollBarVisibility="Hidden">
                             <ItemsPresenter></ItemsPresenter>
@@ -58,40 +58,51 @@
             </ListBox.Template>
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <Grid Width="{Binding Path=ActualWidth, ElementName=columnGrid}" TextBlock.FontSize="20">
-                        <Grid.ToolTip>
+                    <Border>
+                        <Border.InputBindings>
+                            <MouseBinding MouseAction="LeftDoubleClick"
+                                          Command="{Binding ElementName=factoriesPage, Path=DataContext.UpdateFactoryCommand}"
+                                          CommandParameter="{Binding Id}"/>
+                        </Border.InputBindings>
+                        <Border.ToolTip>
                             <ToolTip>
                                 <ListBox ItemsSource="{Binding CarsFactories}">
                                     <ListBox.ItemTemplate>
                                         <DataTemplate>
-                                            <StackPanel Orientation="Horizontal">
-                                                <TextBlock Text="{Binding Car.Name}" Margin="0 0 20 0"/>
-                                                <TextBlock Text="{Binding Car.Cost}"/>
-                                            </StackPanel>
+                                            <Grid Width="240">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition/>
+                                                    <ColumnDefinition/>
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Text="{Binding Car.Name}" TextWrapping="Wrap"/>
+                                                <TextBlock Grid.Column="1" Text="{Binding Car.Cost}"/>
+                                            </Grid>
                                         </DataTemplate>
                                     </ListBox.ItemTemplate>
                                 </ListBox>
                             </ToolTip>
-                        </Grid.ToolTip>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="0.2*"/>
-                            <ColumnDefinition Width="0.3*"/>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                        </Grid.ColumnDefinitions>
-                        <Button Command="{Binding Path=DataContext.DeleteFactoryCommand, ElementName=factoriesPage}" CommandParameter="{Binding Id}" Content="-" VerticalAlignment="Center"/>
-                        <TextBlock Grid.Column="1" Text="{Binding Id}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                        <TextBlock Grid.Column="2" Text="{Binding Type}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                        <TextBlock Grid.Column="3" TextWrapping="Wrap" TextAlignment="Center" VerticalAlignment="Center" HorizontalAlignment="Center">
+                        </Border.ToolTip>
+                        <Grid Width="{Binding Path=ActualWidth, ElementName=columnGrid}" TextBlock.FontSize="20">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="0.2*"/>
+                                <ColumnDefinition Width="0.3*"/>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <Button Command="{Binding Path=DataContext.DeleteFactoryCommand, ElementName=factoriesPage}" CommandParameter="{Binding Id}" Content="-" VerticalAlignment="Center"/>
+                            <TextBlock Grid.Column="1" Text="{Binding Id}" VerticalAlignment="Center" TextAlignment="Center"/>
+                            <TextBlock Grid.Column="2" Text="{Binding Type}" VerticalAlignment="Center" TextAlignment="Center"/>
+                            <TextBlock Grid.Column="3" TextWrapping="Wrap" TextAlignment="Center" VerticalAlignment="Center">
                             <Run Text="{Binding Country}"/>
                             <LineBreak/>
                             <Run Text="{Binding City}"/>
-                        </TextBlock>
-                        <TextBlock Grid.Column="4" Text="{Binding DeliveryTime}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                        <TextBlock Grid.Column="5" Text="{Binding TranspCost}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                    </Grid>
+                            </TextBlock>
+                            <TextBlock Grid.Column="4" Text="{Binding DeliveryTime}" VerticalAlignment="Center" TextAlignment="Center"/>
+                            <TextBlock Grid.Column="5" Text="{Binding TranspCost}" VerticalAlignment="Center" TextAlignment="Center"/>
+                        </Grid>
+                    </Border>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>

@@ -50,6 +50,11 @@
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Grid Width="{Binding ElementName=BankItemsPresenter, Path=ActualWidth}" TextBlock.FontSize="25">
+                        <Grid.InputBindings>
+                            <MouseBinding MouseAction="LeftDoubleClick"
+                                          Command="{Binding ElementName=banksPage, Path=DataContext.UpdateBankCommand}"
+                                          CommandParameter="{Binding Id}"/>
+                        </Grid.InputBindings>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="0.4*"/>
                             <ColumnDefinition/>
@@ -61,24 +66,24 @@
                         <TextBlock Text="{Binding Id}"/>
                         <TextBlock Grid.Column="1" Text="{Binding Name}"/>
 
-                        <Expander Grid.Row="1" Grid.ColumnSpan="2" Header="Показать кредиты">
+                        <Expander Grid.Row="1" Grid.ColumnSpan="3" Header="Показать кредиты">
                             <ListBox ItemsSource="{Binding Credits}" Width="{Binding ElementName=BankItemsPresenter, Path=ActualWidth}">
                                 <ListBox.Template>
                                     <ControlTemplate>
                                         <DockPanel LastChildFill="True">
                                             <Grid DockPanel.Dock="Top" Width="{Binding ElementName=BankItemsPresenter, Path=ActualWidth}" TextBlock.FontSize="16">
                                                 <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="0.6*"/>
-                                                    <ColumnDefinition Width="0.6*"/>
+                                                    <ColumnDefinition/>
+                                                    <ColumnDefinition/>
                                                     <ColumnDefinition/>
                                                     <ColumnDefinition/>
                                                 </Grid.ColumnDefinitions>
                                                 <TextBlock Text="ID Кредита"/>
                                                 <TextBlock Grid.Column="1" Text="Ставка (%)"/>
-                                                <TextBlock Grid.Column="2" Text="Срок истечения (дни)"/>
+                                                <TextBlock Grid.Column="2" Text="Срок (дни)"/>
                                                 <Button Command="{Binding Path=DataContext.AddCreditCommand, ElementName=banksPage}" 
                                                         CommandParameter="{Binding DataContext.Id, RelativeSource={RelativeSource Mode=TemplatedParent}}"
-                                                    Grid.Column="3" Content="Добавить" VerticalAlignment="Center" HorizontalAlignment="Center" Width="80"/>
+                                                        Grid.Column="4" Content="Добавить" VerticalAlignment="Center" HorizontalAlignment="Center" Width="80"/>
                                             </Grid>
                                             <ItemsPresenter></ItemsPresenter>
                                         </DockPanel>
@@ -87,9 +92,14 @@
                                 <ListBox.ItemTemplate>
                                     <DataTemplate>
                                         <Grid TextBlock.FontSize="18" Width="{Binding ElementName=BankItemsPresenter, Path=ActualWidth}">
+                                            <Grid.InputBindings>
+                                                <MouseBinding MouseAction="LeftDoubleClick"
+                                                        Command="{Binding ElementName=banksPage, Path=DataContext.UpdateCreditCommand}"
+                                                        CommandParameter="{Binding Id}"/>
+                                            </Grid.InputBindings>
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="0.6*"/>
-                                                <ColumnDefinition Width="0.6*"/>
+                                                <ColumnDefinition/>
+                                                <ColumnDefinition/>
                                                 <ColumnDefinition/>
                                                 <ColumnDefinition/>
                                             </Grid.ColumnDefinitions>
@@ -98,7 +108,7 @@
                                             <TextBlock Grid.Column="1" Text="{Binding Rate}"/>
                                             <TextBlock Grid.Column="2" Text="{Binding Expiration}"/>
                                             <Button Command="{Binding Path=DataContext.DeleteCreditCommand, ElementName=banksPage}" CommandParameter="{Binding Id}"
-                                                Grid.Column="3" Content="-" VerticalAlignment="Center" HorizontalAlignment="Center" Width="40" Margin="0 0 10 0"/>
+                                                Grid.Column="4" Content="-" VerticalAlignment="Center" HorizontalAlignment="Center" Width="40" Margin="0 0 10 0"/>
                                         </Grid>
                                     </DataTemplate>
                                 </ListBox.ItemTemplate>

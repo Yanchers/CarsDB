@@ -7,9 +7,7 @@
         mc:Ignorable="d" WindowStartupLocation="CenterScreen"
         Title="Создать" Height="170" Width="400"
         x:Name="addCarWindow">
-    <Window.DataContext>
-        <local:AddCarWindowViewModel/>
-    </Window.DataContext>
+    
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
@@ -25,11 +23,11 @@
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             <TextBlock Text="Название" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-            <TextBox Grid.Column="1" Text="{Binding CarName}" FontSize="20" VerticalAlignment="Center"/>
+            <TextBox Grid.Column="1" Text="{Binding Car.Name}" FontSize="20" VerticalAlignment="Center"/>
             <TextBlock Grid.Row="1" Text="Стоимость" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-            <TextBox Grid.Column="1" Text="{Binding CarCost}" Grid.Row="1" FontSize="20" VerticalAlignment="Center"/>
+            <TextBox Grid.Column="1" Text="{Binding Car.Cost}" Grid.Row="1" FontSize="20" VerticalAlignment="Center"/>
         </Grid>
         <Button Command="{Binding CreateCarCommand}" CommandParameter="{Binding ElementName=addCarWindow}"
-                Grid.Column="1" Content="Создать" FontSize="25" VerticalAlignment="Center" Padding="5 10" Margin="10 0"/>
+                Grid.Column="1" Content="OK" FontSize="25" VerticalAlignment="Center" Padding="20 10" Margin="10 0"/>
     </Grid>
 </Window>

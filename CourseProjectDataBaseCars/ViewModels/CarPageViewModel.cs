@@ -38,8 +38,8 @@ namespace CourseProjectDataBaseCars
 
         public Car CurrentCar { get; set; }
         public List<CarSummaryInfo> CarInfoCollection { get; set; } = new List<CarSummaryInfo>();
-        public List<Credit> CreditItems { get; set; } = new List<Credit>();
-        public List<Factory> FactoryItems { get; set; } = new List<Factory>();
+        public ObservableCollection<Credit> CreditItems { get; set; } = new ObservableCollection<Credit>();
+        public ObservableCollection<Factory> FactoryItems { get; set; } = new ObservableCollection<Factory>();
 
         public float TotalCost { get; set; }
         public float MonthlyPay { get; set; }

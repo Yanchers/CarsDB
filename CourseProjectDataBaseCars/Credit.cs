@@ -11,6 +11,16 @@ namespace CourseProjectDataBaseCars
         {
             CarsCredits = new HashSet<CarsCredit>();
         }
+        public Credit(Credit c)
+        {
+            Id = c.Id;
+            BankId = c.BankId;
+            Rate = c.Rate;
+            Expiration = c.Expiration;
+
+            Bank = c.Bank;
+            CarsCredits = c.CarsCredits;
+        }
 
         public int Id { get; set; }
         public int BankId { get; set; }

@@ -17,9 +17,10 @@ namespace CourseProjectDataBaseCars
     /// </summary>
     public partial class AddBankWindow : Window
     {
-        public AddBankWindow()
+        public AddBankWindow(int bankId = 0)
         {
             InitializeComponent();
+            DataContext = new AddBankWindowViewModel(bankId);
         }
     }
 }

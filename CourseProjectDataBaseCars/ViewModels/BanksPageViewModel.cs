@@ -19,9 +19,11 @@ namespace CourseProjectDataBaseCars
             BankItems = context.Banks.Include(b => b.Credits).OrderBy(b => b.Name).ToList();
 
             AddCreditCommand = new RelayCommand(AddCredit);
-            CreateBankCommand = new RelayCommand(CreateBank);
-            DeleteBankCommand = new RelayCommand(DeleteBank);
+            UpdateCreditCommand = new RelayCommand(UpdateCredit);
             DeleteCreditCommand = new RelayCommand(DeleteCredit);
+            CreateBankCommand = new RelayCommand(CreateBank);
+            UpdateBankCommand = new RelayCommand(UpdateBank);
+            DeleteBankCommand = new RelayCommand(DeleteBank);
         }
 
         #region Public Properties
@@ -46,6 +48,14 @@ namespace CourseProjectDataBaseCars
             
             UpdateItems();
         }
+        private void UpdateBank(object bankId)
+        {
+            var window = new AddBankWindow((int)bankId);
+            if ((bool)window.ShowDialog())
+                MessageBox.Show("Банк успешно изменен.", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
+
+            UpdateItems();
+        }
         private void DeleteBank(object param)
         {
             if (SelectedBankIndex == -1) return;
@@ -62,11 +72,22 @@ namespace CourseProjectDataBaseCars
                 MessageBox.Show(e.Message, "Внимание", MessageBoxButton.OK, MessageBoxImage.Exclamation);
             }
         }
+
         private void AddCredit(object bankId)
         {
             var window = new AddCreditWindow((int)bankId);
             if ((bool)window.ShowDialog())
                 MessageBox.Show($"Кредит успешно добавлен в банк {BankItems.Find(b => b.Id == ((AddCreditWindowViewModel)window.DataContext).Credit.BankId).Name}.",
+                    "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
+
+            UpdateItems();
+        }
+        private void UpdateCredit(object creditId)
+        {
+            var window = new AddCreditWindow(0, (int)creditId);
+            
+            if ((bool)window.ShowDialog())
+                MessageBox.Show("Кредит успешно изменен.",
                     "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
 
             UpdateItems();
@@ -92,10 +113,12 @@ namespace CourseProjectDataBaseCars
 
         #region Commands
 
-        public RelayCommand CreateBankCommand { get; set; }
-        public RelayCommand DeleteBankCommand { get; set; }
-        public RelayCommand AddCreditCommand { get; set; }
-        public RelayCommand DeleteCreditCommand { get; set; }
+        public RelayCommand CreateBankCommand { get; private set; }
+        public RelayCommand UpdateBankCommand { get; private set; }
+        public RelayCommand DeleteBankCommand { get; private set; }
+        public RelayCommand AddCreditCommand { get; private set; }
+        public RelayCommand UpdateCreditCommand { get; private set; }
+        public RelayCommand DeleteCreditCommand { get; private set; }
 
         #endregion
 

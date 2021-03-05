@@ -47,6 +47,7 @@ namespace CourseProjectDataBaseCars
             FindCarCommand = new RelayCommand(name => Filter((string)name));
             SelectAllFactoriesCommand = new RelayCommand(param => SelectAllFactories());
             AddCarCommand = new RelayCommand(param => AddCar());
+            UpdateCarCommand = new RelayCommand(UpdateCar);
         }
 
         #region Private Properties
@@ -154,6 +155,15 @@ namespace CourseProjectDataBaseCars
 
             CarItems = new CarDealerContext().Cars.ToList();
         }
+
+        private void UpdateCar(object id)
+        {
+            var window = new AddCarWindow((int)id);
+            if ((bool)window.ShowDialog())
+                MessageBox.Show("Модель успешно изменена.", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
+
+            CarItems = new CarDealerContext().Cars.ToList();
+        }
         //private void GroupBy(GroupingTypes type)
         //{
         //    switch (type)
@@ -173,11 +183,12 @@ namespace CourseProjectDataBaseCars
 
         #region Commands
 
+        public RelayCommand SelectAllFactoriesCommand { get; private set; }
         public RelayCommand ApplyFilterCommand { get; private set; }
         public RelayCommand SelectCarCommand { get; private set; }
         public RelayCommand FindCarCommand { get; private set; }
-        public RelayCommand SelectAllFactoriesCommand { get; private set; }
         public RelayCommand AddCarCommand { get; private set; }
+        public RelayCommand UpdateCarCommand { get; private set; }
 
         #endregion
     }

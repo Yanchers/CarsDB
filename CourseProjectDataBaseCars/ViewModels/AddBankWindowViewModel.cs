@@ -8,19 +8,29 @@ namespace CourseProjectDataBaseCars
 {
     class AddBankWindowViewModel : BaseViewModel
     {
-        public AddBankWindowViewModel()
+        public AddBankWindowViewModel(int bankId)
         {
+            Bank = bankId == 0 ? new Bank() : new CarDealerContext().Banks.Find(bankId);
+
             CreateBankCommand = new RelayCommand(CreateBank);
         }
 
-        public Bank Bank { get; set; } = new Bank();
+        public Bank Bank { get; set; }
 
         private void CreateBank(object param)
         {
             try
             {
                 using var context = new CarDealerContext();
-                context.Database.ExecuteSqlInterpolated($"Dealer.AddBank {Bank.Name}");
+
+                if (Bank.Id == 0)
+                    context.Database.ExecuteSqlInterpolated($"Dealer.AddBank {Bank.Name}");
+                else
+                {
+                    context.Banks.Update(Bank);
+                    context.SaveChanges();
+                }
+
                 ((Window)param).DialogResult = true;
             }
             catch (Exception e)

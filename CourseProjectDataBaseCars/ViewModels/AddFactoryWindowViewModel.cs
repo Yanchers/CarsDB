@@ -8,15 +8,15 @@ namespace CourseProjectDataBaseCars
 {
     class AddFactoryWindowViewModel : BaseViewModel
     {
-        public AddFactoryWindowViewModel()
+        public AddFactoryWindowViewModel(int id)
         {
-
+            Factory = id == 0 ? new Factory() { Type = TransportationTypes.None } : new CarDealerContext().Factories.Find(id);
 
             CreateFactoryCommand = new RelayCommand(CreateFactory);
         }
 
 
-        public Factory Factory { get; set; } = new Factory() { Type = TransportationTypes.None };
+        public Factory Factory { get; set; }
         public List<string> TranspTypeItems { get; set; } = new List<string>()
         {
             "Ничего", "Ж/Д", "Машина", "Самолет", "Корабль"
@@ -28,7 +28,15 @@ namespace CourseProjectDataBaseCars
             try
             {
                 using var context = new CarDealerContext();
-                context.Database.ExecuteSqlInterpolated($"Dealer.AddFactory {Factory.Country}, {Factory.City}, {Factory.DeliveryTime}, {Factory.Type}, {Factory.TranspCost}");
+
+                if (Factory.Id == 0)
+                    context.Database.ExecuteSqlInterpolated($"Dealer.AddFactory {Factory.Country}, {Factory.City}, {Factory.DeliveryTime}, {Factory.Type}, {Factory.TranspCost}");
+                else
+                {
+                    context.Factories.Update(Factory);
+                    context.SaveChanges();
+                }
+
                 ((Window)param).DialogResult = true;
             }
             catch (Exception e)

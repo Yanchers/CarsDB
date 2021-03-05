@@ -8,22 +8,29 @@ namespace CourseProjectDataBaseCars
 {
     class AddCreditWindowViewModel : BaseViewModel
     {
-        public AddCreditWindowViewModel(int bankId)
+        public AddCreditWindowViewModel(int bankId, int creditId)
         {
-            Credit = new Credit() { BankId = bankId };
+            Credit = creditId == 0 ? new Credit() { BankId = bankId } : new CarDealerContext().Credits.Find(creditId);
 
             CreateCreditCommand = new RelayCommand(CreateCredit);
         }
 
         public Credit Credit { get; set; }
 
-        private void CreateCredit(object param) // TODO: Добавить проверку на дубликат !!!
+        private void CreateCredit(object param) 
         {
             try
             {
                 using var context = new CarDealerContext();
-                context.Database.ExecuteSqlInterpolated($"Dealer.AddCredit {Credit.BankId}, {Credit.Rate}, {Credit.Expiration}");
-                context.Credits.Include(c => c.Bank);
+
+                if (Credit.Id == 0)
+                    context.Database.ExecuteSqlInterpolated($"Dealer.AddCredit {Credit.BankId}, {Credit.Rate}, {Credit.Expiration}");
+                else
+                {
+                    context.Credits.Update(Credit);
+                    context.SaveChanges();
+                }
+
                 ((Window)param).DialogResult = true;
             }
             catch (Exception e)

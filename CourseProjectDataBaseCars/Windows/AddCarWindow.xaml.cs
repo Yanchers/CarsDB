@@ -17,9 +17,10 @@ namespace CourseProjectDataBaseCars
     /// </summary>
     public partial class AddCarWindow : Window
     {
-        public AddCarWindow()
+        public AddCarWindow(int id = 0)
         {
             InitializeComponent();
+            DataContext = new AddCarWindowViewModel(id);
         }
     }
 }
