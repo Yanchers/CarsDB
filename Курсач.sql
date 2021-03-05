@@ -409,15 +409,26 @@ select * from Dealer.Banks
 delete from Dealer.Banks
 where [name] = 'ХДДД'
 
-go -- Наверное не надо ======================== !!!
-create trigger Dealer.OnCreditDelete
-on Dealer.Credits
-instead of delete
-as begin
-	if not exists(select * from Dealer.Credits
-					join deleted on Credits.id = deleted.id)
-		raiserror('Указанных кредитов не существует.', 14, 1)
-	else
-		delete from Dealer.Credits
-		where id in (select id from deleted)
-end
+--go -- Наверное не надо ======================== !!!
+--create trigger Dealer.OnCreditDelete
+--on Dealer.Credits
+--instead of delete
+--as begin
+--	if not exists(select * from Dealer.Credits
+--					join deleted on Credits.id = deleted.id)
+--		raiserror('Указанных кредитов не существует.', 14, 1)
+--	else
+--		delete from Dealer.Credits
+--		where id in (select id from deleted)
+--end
+
+--go 
+--create trigger OnCredditAdd
+--on Dealer.Credits
+--instead of insert
+--as begin
+--	if exists(select id from Dealer.Credits
+--				where rate in (select rate from deleted)
+--				and expiration in (select expiration from deleted))
+--		raiserror('Кредит с такими')
+--end
