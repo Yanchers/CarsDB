@@ -19,12 +19,18 @@ namespace CourseProjectDataBaseCars
 
         private void CreateCredit(object param) 
         {
+            if (Credit.Rate < 0.1f || Credit.Expiration <= 0)
+            {
+                MessageBox.Show("Введите корректные данные!", "Внимание", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                return;
+            }
+
             try
             {
                 using var context = new CarDealerContext();
 
                 if (Credit.Id == 0)
-                    context.Database.ExecuteSqlInterpolated($"Dealer.AddCredit {Credit.BankId}, {Credit.Rate}, {Credit.Expiration}");
+                    context.Database.ExecuteSqlInterpolated($"Prog.AddCredit {Credit.BankId}, {Credit.Rate}, {Credit.Expiration}");
                 else
                 {
                     context.Credits.Update(Credit);

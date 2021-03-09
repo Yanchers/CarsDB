@@ -24,7 +24,7 @@ namespace CourseProjectDataBaseCars
                 using var context = new CarDealerContext();
 
                 if (Bank.Id == 0)
-                    context.Database.ExecuteSqlInterpolated($"Dealer.AddBank {Bank.Name}");
+                    context.Database.ExecuteSqlInterpolated($"Prog.AddBank {Bank.Name}");
                 else
                 {
                     context.Banks.Update(Bank);

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CourseProjectDataBaseCars"
         mc:Ignorable="d" WindowStartupLocation="CenterScreen"
-        Title="Добавить кредит" Height="140" Width="420"
+        Title="Добавить кредит" Height="140" Width="380"
         x:Name="addCreditWindow">
     <Grid>
         <Grid.ColumnDefinitions>
@@ -20,10 +20,10 @@
             <TextBlock Text="Ставка (%)" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="20 0 0 0"/>
             <TextBox Text="{Binding Credit.Rate}" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Right" Width="90" Margin="0 0 20 0"/>
 
-            <TextBlock Grid.Row="1" Text="Срок (дни)" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="20 0 0 0"/>
+            <TextBlock Grid.Row="1" Text="Срок (месяца)" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="20 0 0 0"/>
             <TextBox Grid.Row="1" Text="{Binding Credit.Expiration}" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Right" Width="90" Margin="0 0 20 0"/>
         </Grid>
-        <Button Command="{Binding CreateCreditCommand}" CommandParameter="{Binding ElementName=addCreditWindow}" Grid.Column="1" Content="Подтвердить" FontSize="25" VerticalAlignment="Center" 
-                Margin="10 0" Padding="5 5"/>
+        <Button Command="{Binding CreateCreditCommand}" CommandParameter="{Binding ElementName=addCreditWindow}" Grid.Column="1" Content="ОК" FontSize="25" VerticalAlignment="Center" 
+                Margin="10 0" Padding="15 5"/>
     </Grid>
 </Window>

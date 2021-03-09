@@ -10,7 +10,7 @@ namespace CourseProjectDataBaseCars
     {
         public AddCarWindowViewModel(int id)
         {
-            Car = id == 0 ? new Car() : new CarDealerContext().Cars.Find(id);
+            Car = id == 0 ? new Car() { Name = "" } : new CarDealerContext().Cars.Find(id);
 
             CreateCarCommand = new RelayCommand(CreateCar);
         }
@@ -21,12 +21,18 @@ namespace CourseProjectDataBaseCars
 
         private void CreateCar(object param)
         {
+            if (Car.Name.Trim() == "" || Car.Cost <= 0)
+            {
+                MessageBox.Show("Заполните все поля!", "Внимание", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                return;
+            }
+
             try
             {
                 using var context = new CarDealerContext();
 
                 if (Car.Id == 0)
-                    context.Database.ExecuteSqlInterpolated($"Dealer.AddCar {Car.Name}, {Convert.ToInt32(Car.Cost)}");
+                    context.Database.ExecuteSqlInterpolated($"Prog.AddCar {Car.Name}, {Convert.ToInt32(Car.Cost)}");
                 else
                 {
                     context.Cars.Update(Car);

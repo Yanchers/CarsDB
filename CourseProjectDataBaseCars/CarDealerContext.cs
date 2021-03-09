@@ -36,7 +36,7 @@ namespace CourseProjectDataBaseCars
             builder.SetBasePath(Directory.GetCurrentDirectory());
             builder.AddJsonFile("appsettings.json");
 
-            optionsBuilder.UseSqlServer(builder.Build().GetConnectionString("NonaConnection"));
+            optionsBuilder.UseSqlServer(builder.Build().GetConnectionString("DefaultConnection"));
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -162,9 +162,9 @@ namespace CourseProjectDataBaseCars
                 entity.Property(e => e.Type).HasColumnName("type");
             });
 
-            modelBuilder.HasDbFunction(() => GetCarsByFactory(default)).HasSchema("Dealer");
-            modelBuilder.HasDbFunction(() => GetCarsByName(default)).HasSchema("Dealer");
-            modelBuilder.HasDbFunction(() => GetCarsByPrice(default, default)).HasSchema("Dealer");
+            modelBuilder.HasDbFunction(() => GetCarsByFactory(default)).HasSchema("Prog");
+            modelBuilder.HasDbFunction(() => GetCarsByName(default)).HasSchema("Prog");
+            modelBuilder.HasDbFunction(() => GetCarsByPrice(default, default)).HasSchema("Prog");
 
             OnModelCreatingPartial(modelBuilder);
         }

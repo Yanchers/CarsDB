@@ -5,6 +5,13 @@ drop schema Dealer
 go
 create schema Dealer
 go
+create schema Prog
+
+alter schema Prog transfer Dealer.GetPercents
+
+exec Dealer.AddBank 'Jopa'
+
+select * from Dealer.Banks
 
 drop table Dealer.CarsCredits
 drop table Dealer.Credits
@@ -147,9 +154,9 @@ select Dealer.GetPercents(300000, 18, 2.4)
 select Dealer.GetMonthlyPay(300000, 18, 2.4)
 
 -- Функция, возвращающая таблицу с информацией о машине
-drop function Dealer.GetCarInfo
+drop function Prog.GetCarInfo
 go
-create function Dealer.GetCarInfo
+create function Prog.GetCarInfo
 (@model nvarchar(50))
 returns @ret table
 (
@@ -194,8 +201,8 @@ as begin
 		begin
 			insert into @ret values
 			(@creditId, @factoryId, @cost,
-			round(@cost + Dealer.GetPercents(@cost, @months, @percent) + @transpCost, 2),
-			round(Dealer.GetMonthlyPay(@cost, @months, @percent), 2),
+			round(@cost + Prog.GetPercents(@cost, @months, @percent) + @transpCost, 2),
+			round(Prog.GetMonthlyPay(@cost, @months, @percent), 2),
 			dateadd(month, @months, GETDATE()),
 			@bankName, @country, @city, @transpCost, dateadd(day, @arrival, GETDATE()))
 
@@ -212,7 +219,7 @@ as begin
 	return
 end
 go
-select * from Dealer.GetCarInfo('Logan I')
+select * from Prog.GetCarInfo('Logan I')
 
 -- Функция, возвращающая авто, созданные указаным заводом
 drop function Dealer.GetCarsByFactory

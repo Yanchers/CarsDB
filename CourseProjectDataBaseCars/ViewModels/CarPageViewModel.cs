@@ -131,10 +131,10 @@ namespace CourseProjectDataBaseCars
             var builder = new ConfigurationBuilder();
             builder.SetBasePath(System.IO.Directory.GetCurrentDirectory());
             builder.AddJsonFile("appsettings.json");
-            using (var connection = new SqlConnection(builder.Build().GetConnectionString("NonaConnection")))
+            using (var connection = new SqlConnection(builder.Build().GetConnectionString("DefaultConnection")))
             {
                 connection.Open();
-                var command = new SqlCommand($"select * from Dealer.GetCarInfo('{CurrentCar.Name}')", connection);
+                var command = new SqlCommand($"select * from Prog.GetCarInfo('{CurrentCar.Name}')", connection);
                 var reader = command.ExecuteReader();
 
                 while (reader.Read())

@@ -30,7 +30,7 @@ namespace CourseProjectDataBaseCars
                 using var context = new CarDealerContext();
 
                 if (Factory.Id == 0)
-                    context.Database.ExecuteSqlInterpolated($"Dealer.AddFactory {Factory.Country}, {Factory.City}, {Factory.DeliveryTime}, {Factory.Type}, {Factory.TranspCost}");
+                    context.Database.ExecuteSqlInterpolated($"Prog.AddFactory {Factory.Country}, {Factory.City}, {Factory.DeliveryTime}, {Factory.Type}, {Factory.TranspCost}");
                 else
                 {
                     context.Factories.Update(Factory);

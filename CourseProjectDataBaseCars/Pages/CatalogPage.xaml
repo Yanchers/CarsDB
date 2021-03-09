@@ -30,11 +30,11 @@
 
         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">
             <Button Command="{Binding AddCarCommand}" Content="Добавить" FontSize="21" Margin="0 0 50 0"/>
-            <TextBlock Text="Группировка по" FontSize="20" Margin="0 0 20 0" VerticalAlignment="Center"/>
+            <!--<TextBlock Text="Группировка по" FontSize="20" Margin="0 0 20 0" VerticalAlignment="Center"/>
             <ComboBox Width="190" FontSize="20" SelectedIndex="{Binding SelectedGrouping}" Margin="0 0 20 0">
                 <ComboBoxItem Content="Без группировки" IsSelected="True"/>
                 <ComboBoxItem Content="Заводам"/>
-            </ComboBox>
+            </ComboBox>-->
             
             <TextBlock Text="Сортировка по" FontSize="20" Margin="0 0 20 0" VerticalAlignment="Center"/>
             <ComboBox Width="190" FontSize="20" SelectedIndex="{Binding SelectedSorting}">
