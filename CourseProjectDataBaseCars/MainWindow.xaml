@@ -11,6 +11,7 @@
         <local:MainWindowViewModel/>
     </Window.DataContext>
     <Grid>
+        
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition/>

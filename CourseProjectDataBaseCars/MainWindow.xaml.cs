@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Hardcodet.Wpf.TaskbarNotification;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,9 +21,11 @@ namespace CourseProjectDataBaseCars
     /// </summary>
     public partial class MainWindow : Window
     {
+        private TaskbarIcon mTray;
         public MainWindow()
         {
             InitializeComponent();
+            mTray = FindResource("MyTrayIcon") as TaskbarIcon;
         }
     }
 }
