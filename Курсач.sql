@@ -221,7 +221,7 @@ end
 go
 select * from Prog.GetCarInfo('Logan I')
 
--- Функция, возвращающая авто, созданные указаным заводом
+-- Функция, возвращающая авто, созданные указанным заводом
 drop function Dealer.GetCarsByFactory
 go
 create function Dealer.GetCarsByFactory(@factoryId int)
@@ -234,7 +234,7 @@ go
 select * from Dealer.GetCarsByFactory(3)
 
 drop function Dealer.GetCarsByName
-go -- Функция, возвращающая авто с указаным названием модели
+go -- Функция, возвращающая авто с указанным названием модели
 create function Dealer.GetCarsByName(@name nvarchar(50))
 returns table
 as return

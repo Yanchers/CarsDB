@@ -15,6 +15,11 @@ namespace CourseProjectDataBaseCars
         {
         }
 
+        public CarDealerContext(string conStr)
+        {
+
+        }
+
         public CarDealerContext(DbContextOptions<CarDealerContext> options)
             : base(options)
         {

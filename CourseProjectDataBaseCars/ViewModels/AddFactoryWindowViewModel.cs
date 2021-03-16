@@ -25,6 +25,12 @@ namespace CourseProjectDataBaseCars
         
         private void CreateFactory(object param)
         {
+            if (Factory.City == "" || Factory.Country == "" || Factory.TranspCost <= 0 || Factory.DeliveryTime <= 0)
+            {
+                MessageBox.Show("Введите корректные данные!", "Внимание", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                return;
+            }
+
             try
             {
                 using var context = new CarDealerContext();
