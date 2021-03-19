@@ -48,7 +48,7 @@ namespace CourseProjectDataBaseCars
             try
             {
                 using var context = new CarDealerContext();
-
+                
                 context.Factories.Remove(context.Factories.Find((int)id));
                 context.SaveChanges();
 

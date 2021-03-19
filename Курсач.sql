@@ -432,3 +432,18 @@ where [name] = 'ХДДД'
 --				and expiration in (select expiration from deleted))
 --		raiserror('Кредит с такими')
 --end
+
+drop login [Admin]
+create login [Admin] with password = 'password'
+
+drop user Administrator
+create user Administrator for login [Admin]
+
+deny select on schema :: Dealer to Administrator
+
+select * from Dealer.Banks
+select * from Dealer.Cars
+
+execute Dealer.AddCar 'Model I', 89000
+
+insert into Dealer.Banks values ('Ikota')
