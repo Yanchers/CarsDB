@@ -17,13 +17,16 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
         <Menu FontSize="14">
-            <MenuItem Command="{Binding CatalogPageCommand}" Header="Главная"/>
+            <MenuItem Header="Главная">
+                <MenuItem Command="{Binding CatalogPageCommand}" Header="Каталог"/>
+                <MenuItem Command="{Binding DbLoginPageCommand}" Header="Пользователь"/>
+            </MenuItem>
             <MenuItem Header="Изменить">
                 <MenuItem Command="{Binding BanksPageCommand}" Header="Банки \ Кредиты"/>
                 <MenuItem Command="{Binding FactoriesPageCommand}" Header="Заводы"/>
                 <MenuItem Command="{Binding DevPageCommand}" Header="Dev"/>
             </MenuItem>
-            <MenuItem Header="Справка"/>
+            <MenuItem Command="{Binding HelpCommand}" Header="Справка"/>
         </Menu>
         
         <Frame Grid.Row="1" Content="{Binding CurrentPage, Source={x:Static local:ApplicationViewModel.Instance}, Converter={local:PageConverter}}" NavigationUIVisibility="Hidden"/>

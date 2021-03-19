@@ -440,6 +440,16 @@ where [name] = 'ХДДД'
 --		raiserror('Кредит с такими')
 --end
 use CarDealer
-drop user Administrator
-create user Administrator for login [Admin]
-grant select, insert, update, delete, execute on schema :: Dealer to Administrator
+
+create login Administrator with password = 'password'
+create login GuestLogin with password = '123456'
+
+drop user [Admin] -- Пользователь Администратор, который может выполнять, просматривать, вставлять и т.п. любые процедуры\функции, данные
+create user [Admin] for login Administrator
+grant select, insert, update, delete, execute on schema :: Dealer to [Admin]
+grant select, insert, update, delete, execute on schema :: Prog to [Admin]
+
+drop user GuestUser
+create user GuestUser for login GuestLogin
+grant select on schema :: Dealer to GuestUser
+grant select on schema :: Prog to GuestUser

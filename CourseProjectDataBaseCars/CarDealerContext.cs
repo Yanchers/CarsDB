@@ -41,7 +41,7 @@ namespace CourseProjectDataBaseCars
             builder.SetBasePath(Directory.GetCurrentDirectory());
             builder.AddJsonFile("appsettings.json");
 
-            optionsBuilder.UseSqlServer(builder.Build().GetConnectionString("DefaultConnection"));
+            optionsBuilder.UseSqlServer(builder.Build().GetConnectionString("UserConnection"));
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

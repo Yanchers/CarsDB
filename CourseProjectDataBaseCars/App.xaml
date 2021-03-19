@@ -12,9 +12,11 @@
             </tb:TaskbarIcon.TrayToolTip>
             <tb:TaskbarIcon.ContextMenu>
                 <ContextMenu>
-                    <MenuItem Header="Жопа"/>
-                    <MenuItem Header="Нона"/>
-                    <MenuItem Header="Гей"/>
+                    <MenuItem Header="Пункт 1"/>
+                    <MenuItem Header="Пункт 2"/>
+                    <MenuItem Header="Пункт 3"/>
+                    <Separator/>
+                    <MenuItem Header="Выход"/>
                 </ContextMenu>
             </tb:TaskbarIcon.ContextMenu>
         </tb:TaskbarIcon>

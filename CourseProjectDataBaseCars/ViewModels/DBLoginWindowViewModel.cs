@@ -18,27 +18,20 @@ namespace CourseProjectDataBaseCars
             AuthHelper.SetDefaultConnectionString();
 
             LoginCommand = new RelayCommand(Authorize);
+            CancelCommand = new RelayCommand(Cancel);
         }
 
         public User User { get; set; } = new User();
 
         private void Authorize(object param)
         {
-            ChangeConnectionString();
-        }
+            var builder = new SqlConnectionStringBuilder(AuthHelper.ConnectionString)
+            {
+                UserID = User.UserId,
+                Password = User.Password
+            };
 
-        public RelayCommand LoginCommand { get; private set; }
-        public RelayCommand CancelCommand { get; private set; }
-
-        private void ChangeConnectionString()
-        {
-            var builder = new SqlConnectionStringBuilder(AuthHelper.ConnectionString);
-            builder.UserID = User.UserId;
-            builder.Password = User.Password;
-
-            AuthHelper.ConnectionString = builder.ConnectionString;
-
-            using (var connection = new SqlConnection(AuthHelper.ConnectionString))
+            using (var connection = new SqlConnection(builder.ConnectionString))
             {
                 try
                 {
@@ -52,11 +45,25 @@ namespace CourseProjectDataBaseCars
                     return;
                 }
             }
-            string jsonStr = File.ReadAllText("appsettings.json");
-            var obj = JsonConvert.DeserializeObject(jsonStr) as JObject;
-            var token = obj.SelectToken("ConnectionStrings").SelectToken("UserConnection");
-            token.Replace(AuthHelper.ConnectionString);
-            File.WriteAllText("appsettings.json", obj.ToString());
+
+            AuthHelper.ChangeConnectionString(builder.ConnectionString);
+
+            ApplicationViewModel.Instance.CurrentPage = PageTypes.Catalog;
+            if (!ApplicationViewModel.Instance.HasMainWindow)
+            {
+                var window = new MainWindow();
+                window.Show();
+                ApplicationViewModel.Instance.HasMainWindow = true;
+            }
+
+            (param as Window).Close();
         }
+        private void Cancel(object param)
+        {
+            (param as Window).Close();
+        }
+
+        public RelayCommand LoginCommand { get; private set; }
+        public RelayCommand CancelCommand { get; private set; }
     }
 }

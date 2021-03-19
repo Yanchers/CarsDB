@@ -37,12 +37,20 @@ namespace CourseProjectDataBaseCars
 
         private void AddRef(object param)
         {
-            using var context = new CarDealerContext();
+            try
+            {
+                using var context = new CarDealerContext();
 
-            if (context.Database.ExecuteSqlInterpolated($"Prog.AddCarCreditFactoryRef {CarId}, {CreditItems[SelectedCredit].Id}, {FactoryItems[SelectedFactory].Id}") > 0)
-                ((Window)param).DialogResult = true;
-            else
-                MessageBox.Show("Модель уже связана.", "Внимание", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                if (context.Database.ExecuteSqlInterpolated($"Prog.AddCarCreditFactoryRef {CarId}, {CreditItems[SelectedCredit].Id}, {FactoryItems[SelectedFactory].Id}") > 0)
+                    ((Window)param).DialogResult = true;
+                else
+                    MessageBox.Show("Модель уже связана.", "Внимание", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message, "Внимание", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                return;
+            }
         }
         public RelayCommand AddRefCommand { get; private set; }
 

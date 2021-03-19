@@ -91,22 +91,37 @@ namespace CourseProjectDataBaseCars
         private void DeleteCreditRef(object param)
         {
             if (SelectedCredit == -1) return;
+            try
+            {
+                using var context = new CarDealerContext();
 
-            using var context = new CarDealerContext();
+                context.CarsCredits.Remove(context.CarsCredits.Find(CurrentCar.Id, CreditItems[SelectedCredit].Id));
+                context.SaveChanges();
 
-            context.CarsCredits.Remove(context.CarsCredits.Find(CurrentCar.Id, CreditItems[SelectedCredit].Id));
-            context.SaveChanges();
-
-            UpdateData();
+                UpdateData();
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message, "Внимание", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                return;
+            }
         }
         private void DeleteFactoryRef(object param)
         {
             if (SelectedFactory == -1) return;
 
-            using var context = new CarDealerContext();
+            try
+            {
+                using var context = new CarDealerContext();
 
-            context.CarsFactories.Remove(context.CarsFactories.Find(CurrentCar.Id, FactoryItems[SelectedFactory].Id));
-            context.SaveChanges();
+                context.CarsFactories.Remove(context.CarsFactories.Find(CurrentCar.Id, FactoryItems[SelectedFactory].Id));
+                context.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message, "Внимание", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                return;
+            }
 
             UpdateData();
         }
