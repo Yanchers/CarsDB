@@ -439,3 +439,7 @@ where [name] = 'ХДДД'
 --				and expiration in (select expiration from deleted))
 --		raiserror('Кредит с такими')
 --end
+use CarDealer
+drop user Administrator
+create user Administrator for login [Admin]
+grant select, insert, update, delete, execute on schema :: Dealer to Administrator

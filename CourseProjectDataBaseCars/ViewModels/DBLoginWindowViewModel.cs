@@ -54,7 +54,7 @@ namespace CourseProjectDataBaseCars
             }
             string jsonStr = File.ReadAllText("appsettings.json");
             var obj = JsonConvert.DeserializeObject(jsonStr) as JObject;
-            var token = obj.SelectToken("UserConnection");
+            var token = obj.SelectToken("ConnectionStrings").SelectToken("UserConnection");
             token.Replace(AuthHelper.ConnectionString);
             File.WriteAllText("appsettings.json", obj.ToString());
         }
