@@ -6,17 +6,18 @@
         xmlns:local="clr-namespace:CourseProjectDataBaseCars"
         mc:Ignorable="d" x:Name="loginWindow"
         Title="DBLoginWindow" Height="340" Width="600">
+    
     <Window.DataContext>
         <local:DBLoginWindowViewModel/>
     </Window.DataContext>
-    <Grid>
+    <Grid Background="{StaticResource BackgroundColorBrush}">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition/>
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
 
-        <TextBlock Text="База данных Автодилер" FontSize="45" HorizontalAlignment="Center" Margin="0 14"/>
+        <TextBlock Foreground="{StaticResource MainForegroundColorBrush}" Text="База данных Автодилер" FontSize="45" HorizontalAlignment="Center" Margin="0 14"/>
 
         <Grid Grid.Row="1">
             <Grid.RowDefinitions>
@@ -24,8 +25,10 @@
                 <RowDefinition/>
             </Grid.RowDefinitions>
             <!--<TextBox Text="Логин" TextAlignment="Center" VerticalContentAlignment="Center" FontSize="36"/>-->
-            <TextBox Text="{Binding User.UserId}" FontSize="36" VerticalAlignment="Center" Margin="100 0" TextAlignment="Center"/>
-            <TextBox Grid.Row="1" Text="{Binding User.Password}" VerticalAlignment="Center" Margin="100 0" TextAlignment="Center" FontSize="36"/>
+            <TextBox Style="{StaticResource LoginTextBox}" Tag="Логин" 
+                     Text="{Binding User.UserId}" FontSize="36" VerticalAlignment="Center" Margin="100 0" TextAlignment="Center"/>
+            <TextBox Grid.Row="1" Style="{StaticResource LoginTextBox}" Tag="Пароль"
+                     Text="{Binding User.Password}" VerticalAlignment="Center" Margin="100 0" TextAlignment="Center" FontSize="36"/>
         </Grid>
 
         <Grid Grid.Row="2" Margin="0 10">
@@ -33,8 +36,8 @@
                 <ColumnDefinition/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <Button Command="{Binding LoginCommand}" CommandParameter="{Binding ElementName=loginWindow}" Content="Войти" FontSize="30" Margin="30 0"/>
-            <Button Command="{Binding CancelCommand}" Grid.Column="1" Content="Отмена" FontSize="30" Margin="30 0"/>
+            <Button Style="{StaticResource OkButton}" Command="{Binding LoginCommand}" CommandParameter="{Binding ElementName=loginWindow}" Content="Войти" FontSize="30" Margin="30 0"/>
+            <Button Command="{Binding CancelCommand}" CommandParameter="{Binding ElementName=loginWindow}" Grid.Column="1" Content="Отмена" FontSize="30" Margin="30 0"/>
         </Grid>
     </Grid>
 </Window>
