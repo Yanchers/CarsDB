@@ -25,6 +25,8 @@ namespace CourseProjectDataBaseCars
 
         private void Authorize(object param)
         {
+            if (string.IsNullOrWhiteSpace(User.UserId) || string.IsNullOrWhiteSpace(User.Password)) return;
+
             var builder = new SqlConnectionStringBuilder(AuthHelper.ConnectionString)
             {
                 UserID = User.UserId,

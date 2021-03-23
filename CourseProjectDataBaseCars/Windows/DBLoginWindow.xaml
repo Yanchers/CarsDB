@@ -36,8 +36,8 @@
                 <ColumnDefinition/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <Button Style="{StaticResource OkButton}" Command="{Binding LoginCommand}" CommandParameter="{Binding ElementName=loginWindow}" Content="Войти" FontSize="30" Margin="30 0"/>
-            <Button Command="{Binding CancelCommand}" CommandParameter="{Binding ElementName=loginWindow}" Grid.Column="1" Content="Отмена" FontSize="30" Margin="30 0"/>
+            <Button Style="{StaticResource OkButton}" Command="{Binding LoginCommand}" CommandParameter="{Binding ElementName=loginWindow}" Content="Войти" FontSize="30" Padding="0 3" Margin="30 0"/>
+            <Button Style="{StaticResource OkButton}" Command="{Binding CancelCommand}" CommandParameter="{Binding ElementName=loginWindow}" Grid.Column="1" Content="Отмена" FontSize="30" Margin="30 0"/>
         </Grid>
     </Grid>
 </Window>

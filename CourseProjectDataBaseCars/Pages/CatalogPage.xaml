@@ -9,8 +9,7 @@
       Height="450" Width="1100"
       Title="Catalog"
       x:Name="catalogPage">
-
-    <Grid>
+    <Grid Background="{StaticResource BackgroundColorBrush}" TextBlock.Foreground="{StaticResource MainForegroundColorBrush}">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
@@ -24,12 +23,13 @@
         
         <TextBlock Grid.ColumnSpan="2" Text="Официальный реселлер Renault" FontSize="30" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 
-        <TextBox x:Name="FindTbx" Grid.Row="1" Margin="15 5"/>
-        <Button Command="{Binding FindCarCommand}" CommandParameter="{Binding ElementName=FindTbx, Path=Text}" Grid.Row="1" Grid.Column="1" 
-                Content="Поиск" FontSize="18" VerticalAlignment="Center" Width="90"/>
+        <!--<TextBox x:Name="FindTbx" Grid.Row="1" Margin="15 5"/>
+        <Button Style="{StaticResource OkButton}" Command="{Binding FindCarCommand}" CommandParameter="{Binding ElementName=FindTbx, Path=Text}" Grid.Row="1" Grid.Column="1" 
+                Content="Поиск" FontSize="18" VerticalAlignment="Center" Width="90"/>-->
+        <local:SearchBox Grid.Row="1" FontSize="15" Margin="40 0"/>
 
         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">
-            <Button Command="{Binding AddCarCommand}" Content="Добавить" FontSize="21" Margin="0 0 50 0"/>
+            <Button Style="{StaticResource OkButton}" Command="{Binding AddCarCommand}" Content="Добавить" FontSize="21" Margin="0 0 50 0"/>
             <!--<TextBlock Text="Группировка по" FontSize="20" Margin="0 0 20 0" VerticalAlignment="Center"/>
             <ComboBox Width="190" FontSize="20" SelectedIndex="{Binding SelectedGrouping}" Margin="0 0 20 0">
                 <ComboBoxItem Content="Без группировки" IsSelected="True"/>
@@ -44,7 +44,8 @@
             </ComboBox>
         </StackPanel>
 
-        <ListBox Grid.Row="3" ItemsSource="{Binding CarItems}" BorderThickness="0" FontSize="23">
+        <ListBox Grid.Row="3" ItemsSource="{Binding CarItems}" BorderThickness="0" FontSize="23" 
+                 TextBlock.Foreground="{StaticResource MainForegroundColorBrush}" Background="Transparent">
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>
                     <UniformGrid Columns="4"/>
