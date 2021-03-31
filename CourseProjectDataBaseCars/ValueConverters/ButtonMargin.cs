@@ -6,11 +6,11 @@ using System.Windows;
 
 namespace CourseProjectDataBaseCars
 {
-    class ButtonWidthSubWidthConverter : BaseValueConverter<ButtonWidthSubWidthConverter>
+    class ButtonMargin : BaseValueConverter<ButtonMargin>
     {
         public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var newThickness = new Thickness(0, 0, -((Thickness)value).Right, 0);
+            var newThickness = new Thickness(0, 0, (double)value, 0);
             return newThickness;
         }
 

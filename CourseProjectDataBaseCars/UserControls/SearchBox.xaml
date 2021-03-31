@@ -8,15 +8,25 @@
     
     <Grid>
         <TextBox x:Name="textBox" Text="Asas" HorizontalAlignment="Stretch" VerticalContentAlignment="Center"/>
-        <Button x:Name="searchBtn" Width="30" HorizontalAlignment="Right" VerticalContentAlignment="Center">
+        <Button x:Name="searchBtn" Width="24" HorizontalAlignment="Right" VerticalContentAlignment="Center">
             <Image Source="../Images/search-solid.png" RenderOptions.BitmapScalingMode="HighQuality"/>
-            <Button.Style>
+            <!--<Button.Style>
                 <Style TargetType="Button">
+                    <Setter Property="Margin" Value="{Binding Width, Converter={local:ButtonMargin}}"/>
                     <Style.Triggers>
-                        <
+                        <DataTrigger Binding="{Binding IsMouseOver, ElementName=textBox}" Value="True">
+                            <DataTrigger.EnterActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <ThicknessAnimation Duration="0:0:0.1" Storyboard.TargetProperty="Margin"
+                                                            To="{Binding Margin, Converter={local:ButtonWidthSubWidthConverter}}"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </DataTrigger.EnterActions>
+                        </DataTrigger>
                     </Style.Triggers>
                 </Style>
-            </Button.Style>
+            </Button.Style>-->
         </Button>
     </Grid>
 </UserControl>

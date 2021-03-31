@@ -23,18 +23,44 @@ namespace CourseProjectDataBaseCars
         {
             InitializeComponent();
 
-            DataTrigger trigger = new DataTrigger();
-            var style = new Style(typeof(Button));
+            Style style = new Style(typeof(Button));
+            MultiDataTrigger multi = new MultiDataTrigger();
+            multi.Conditions.Add(new Condition(new Binding("IsMouseOver") { ElementName = "textBox" }, true));
+            multi.Conditions.Add(new Condition(new Binding("IsFocused") { ElementName = "textBox" }, true));
+            DataTrigger triggerMouseOver = new DataTrigger();
+            DataTrigger triggerIsFocused = new DataTrigger();
+            Storyboard sbEnter = new Storyboard();
+            Storyboard sbExit = new Storyboard();
+            ThicknessAnimation animEnter = new ThicknessAnimation(new Thickness(0, 0, 20, 0), new Duration(new TimeSpan(0, 0, 0, 0, 200)));
+            ThicknessAnimation animExit = 
+                new ThicknessAnimation(new Thickness(0, 0, -searchBtn.Width, 0), new Duration(new TimeSpan(0, 0, 0, 0, 200)));
 
-            trigger.Binding = new Binding("IsMouseOver") { ElementName = "textBox" };
-            trigger.Value = true;
-            trigger.Setters.Add(new Setter(MarginProperty, new Thickness(0)));
-            Storyboard sb = new Storyboard();
-            ThicknessAnimation anim = new ThicknessAnimation(new Thickness(0), new Duration(new TimeSpan(100)));
-            sb.BeginAnimation(MarginProperty, anim);
-            trigger.EnterActions.Add();
+            triggerMouseOver.Binding = new Binding("IsMouseOver") { ElementName = "textBox" };
+            triggerMouseOver.Value = true;
 
-            style.Triggers.Add(trigger);
+            animEnter.EasingFunction = new CubicEase();
+            sbEnter.Children.Add(animEnter);
+            Storyboard.SetTargetProperty(animEnter, new PropertyPath("Margin"));
+
+            var beginSbEnter = new BeginStoryboard();
+            beginSbEnter.Storyboard = sbEnter;
+
+            animExit.EasingFunction = new CubicEase();
+            sbExit.Children.Add(animExit);
+            Storyboard.SetTargetProperty(animExit, new PropertyPath("Margin"));
+
+            var beginSbExit = new BeginStoryboard();
+            beginSbExit.Storyboard = sbExit;
+
+            multi.EnterActions.Add(beginSbEnter);
+            multi.ExitActions.Add(beginSbExit);
+            //triggerMouseOver.EnterActions.Add(beginSbEnter);
+            //triggerMouseOver.ExitActions.Add(beginSbExit);
+            //triggerIsFocused.Binding = new Binding("IsFocused") { ElementName = "textBox" };
+            //triggerIsFocused.EnterActions.Add(beginSbEnter);
+            //triggerIsFocused.ExitActions.Add(beginSbExit);
+
+            style.Triggers.Add(multi);
             style.Setters.Add(new Setter(MarginProperty, new Thickness(0, 0, -searchBtn.Width, 0)));
             style.Setters.Add(new Setter(BackgroundProperty, Brushes.Transparent));
             style.Setters.Add(new Setter(BorderThicknessProperty, new Thickness(0)));

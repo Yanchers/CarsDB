@@ -14,6 +14,7 @@
         
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
         <Menu FontSize="14">
@@ -29,6 +30,8 @@
             <MenuItem Command="{Binding HelpCommand}" Header="Справка"/>
         </Menu>
         
-        <Frame Grid.Row="1" Content="{Binding CurrentPage, Source={x:Static local:ApplicationViewModel.Instance}, Converter={local:PageConverter}}" NavigationUIVisibility="Hidden"/>
+        
+        
+        <Frame Grid.Row="2" Content="{Binding CurrentPage, Source={x:Static local:ApplicationViewModel.Instance}, Converter={local:PageConverter}}" NavigationUIVisibility="Hidden"/>
     </Grid>
 </Window>

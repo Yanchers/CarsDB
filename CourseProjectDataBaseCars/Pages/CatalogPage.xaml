@@ -26,7 +26,7 @@
         <!--<TextBox x:Name="FindTbx" Grid.Row="1" Margin="15 5"/>
         <Button Style="{StaticResource OkButton}" Command="{Binding FindCarCommand}" CommandParameter="{Binding ElementName=FindTbx, Path=Text}" Grid.Row="1" Grid.Column="1" 
                 Content="Поиск" FontSize="18" VerticalAlignment="Center" Width="90"/>-->
-        <local:SearchBox Grid.Row="1" FontSize="15" Margin="40 0"/>
+        <local:SearchBox Grid.Row="1" FontSize="23" Margin="40 0"/>
 
         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">
             <Button Style="{StaticResource OkButton}" Command="{Binding AddCarCommand}" Content="Добавить" FontSize="21" Margin="0 0 50 0"/>
